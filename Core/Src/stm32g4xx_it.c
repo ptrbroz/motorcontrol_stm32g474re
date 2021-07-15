@@ -23,6 +23,18 @@
 #include "stm32g4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include "structs.h"
+#include "usart.h"
+#include "fsm.h"
+#include "spi.h"
+#include "gpio.h"
+#include "adc.h"
+#include "foc.h"
+#include "can.h"
+#include "position_sensor.h"
+#include "hw_config.h"
+#include "user_config.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

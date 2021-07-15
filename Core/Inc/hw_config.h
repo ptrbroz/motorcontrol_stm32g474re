@@ -34,7 +34,8 @@
 #define ENC_READ_WORD	0x00				// Encoder read command
 
 /* Misc. GPIO */
-#define LED         	GPIOC, GPIO_PIN_5	// LED Pin
+#define LED1         	GPIOC, GPIO_PIN_2	// LED Pin
+#define LED2         	GPIOC, GPIO_PIN_3	// LED Pin
 
 /* CAN */
 #define CAN_H			hfdcan2				// CAN handle

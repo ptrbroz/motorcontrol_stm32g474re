@@ -109,7 +109,7 @@
 			case MOTOR_MODE:
 
 				//printf("Entering Motor Mode\r\n");
-				HAL_GPIO_WritePin(LED, GPIO_PIN_SET );
+				HAL_GPIO_WritePin(LED1, GPIO_PIN_SET );
 				reset_foc(&controller);
 				drv_enable_gd(drv);
 				break;
@@ -152,7 +152,7 @@
 					drv_disable_gd(drv);
 					reset_foc(&controller);
 					//printf("Leaving Motor Mode\r\n");
-					HAL_GPIO_WritePin(LED, GPIO_PIN_RESET );
+					HAL_GPIO_WritePin(LED1, GPIO_PIN_RESET );
 				}
 				zero_commands(&controller);		// Set commands to zero
 				break;

@@ -152,6 +152,8 @@ int main(void)
   MX_ADC3_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_GPIO_WritePin(LED2, 1 );
+
   /* Load settings from flash */
   //todo flash
 
@@ -265,7 +267,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
 	  HAL_Delay(150);
 	  drv_print_faults(drv);
 	  if(state.state==MOTOR_MODE){
