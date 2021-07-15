@@ -38,7 +38,7 @@ extern COMStruct com;
 extern FSMStruct state;
 extern EncoderStruct comm_encoder;
 extern DRVStruct drv;
-extern PreferenceWriter prefs;
+//extern PreferenceWriter prefs;
 extern CalStruct comm_encoder_cal;
 extern CANTxMessage can_tx;
 extern CANRxMessage can_rx;

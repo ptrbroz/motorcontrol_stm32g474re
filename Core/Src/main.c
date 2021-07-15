@@ -76,7 +76,7 @@
 /* Flash Registers */
 float __float_reg[64];
 int __int_reg[256];
-PreferenceWriter prefs;
+//PreferenceWriter prefs;
 
 int count = 0;
 
@@ -153,8 +153,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* Load settings from flash */
-  preference_writer_init(&prefs, 6);
-  preference_writer_load(prefs);
+  //todo flash
+
+  //preference_writer_init(&prefs, 6);
+  //preference_writer_load(prefs);
 
   /* Sanitize configs in case flash is empty*/
   if(E_ZERO==-1){E_ZERO = 0;}

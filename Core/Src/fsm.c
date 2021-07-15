@@ -49,10 +49,15 @@
 				 memcpy(&comm_encoder.offset_lut, comm_encoder_cal.lut_arr, sizeof(comm_encoder.offset_lut));
 				 memcpy(&ENCODER_LUT, comm_encoder_cal.lut_arr, sizeof(comm_encoder_cal.lut_arr));
 				 //for(int i = 0; i<128; i++){printf("%d\r\n", ENCODER_LUT[i]);}
+
+				 //todo flash
+				 /*
 				 if (!preference_writer_ready(prefs)){ preference_writer_open(&prefs);}
 				 preference_writer_flush(&prefs);
 				 preference_writer_close(&prefs);
 				 preference_writer_load(prefs);
+				 */
+				 printf("Skipping prefs, flash not yet solved");
 				 update_fsm(fsmstate, 27);
 			 }
 
@@ -344,11 +349,13 @@
 
 	 /* Write new settings to flash */
 
+	 //todo flash
+	 /*
 	 if (!preference_writer_ready(prefs)){ preference_writer_open(&prefs);}
 	 preference_writer_flush(&prefs);
 	 preference_writer_close(&prefs);
 	 preference_writer_load(prefs);
-
+	 */
 	 enter_setup_state();
 
 	 fsmstate->bytecount = 0;

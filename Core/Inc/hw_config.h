@@ -17,9 +17,9 @@
 
 #define ADC_CH_MAIN		hadc1				// ADC channel handle which drives simultaneous mode
 #define ADC_CH_IA		hadc1					// Phase A current sense ADC channel handle.  0 = unused
-#define ADC_CH_IB		hadc1				// Phase B current sense ADC channel handle.  0 = unused
+#define ADC_CH_IB		hadc2				// Phase B current sense ADC channel handle.  0 = unused
 #define ADC_CH_IC		0				// Phase C current sense ADC channel handle.  0 = unused
-#define ADC_CH_VBUS		hadc1				// Bus voltage ADC channel handle.  0 = unused
+#define ADC_CH_VBUS		hadc3				// Bus voltage ADC channel handle.  0 = unused
 
 /* DRV Gate drive */
 #define ENABLE_PIN 		GPIOA, GPIO_PIN_11  // Enable gate drive pin.
