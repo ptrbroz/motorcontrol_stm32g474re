@@ -122,6 +122,18 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
 
 /* USER CODE BEGIN 1 */
 void can_rx_init(CANRxMessage *msg){
+	msg->filter.FilterID1 = CAN_ID<<5;
+	msg->filter.FilterID2 = 0xFFF;
+	msg->filter.FilterIndex = 0;
+	msg->filter.FilterType = FDCAN_FILTER_MASK;
+	msg->filter.IdType = FDCAN_STANDARD_ID;
+	msg->filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+
+	HAL_FDCAN_ConfigFilter(&CAN_H, &msg->filter);
+
+
+	//original settings from Ben's fw:
+	/*
 	msg->filter.FilterFIFOAssignment=CAN_FILTER_FIFO0; 	// set fifo assignment
 	msg->filter.FilterIdHigh=CAN_ID<<5; 				// CAN ID
 	msg->filter.FilterIdLow=0x0;
@@ -131,14 +143,30 @@ void can_rx_init(CANRxMessage *msg){
 	msg->filter.FilterScale=CAN_FILTERSCALE_32BIT;
 	msg->filter.FilterActivation=ENABLE;
 	HAL_CAN_ConfigFilter(&CAN_H, &msg->filter);
+	*/
 }
 
 void can_tx_init(CANTxMessage *msg){
-	msg->tx_header.DLC = 6; 			// message size of 8 byte
-	msg->tx_header.IDE=CAN_ID_STD; 		// set identifier to standard
-	msg->tx_header.RTR=CAN_RTR_DATA; 	// set data type to remote transmission request?
-	msg->tx_header.StdId = CAN_MASTER;  // recipient CAN ID
+	msg->tx_header.BitRateSwitch = FDCAN_BRS_OFF;
+	msg->tx_header.DataLength = FDCAN_DLC_BYTES_6;
+	msg->tx_header.ErrorStateIndicator = FDCAN_ESI_ACTIVE; //???
+	msg->tx_header.FDFormat = FDCAN_CLASSIC_CAN;
+	msg->tx_header.IdType = FDCAN_STANDARD_ID;
+	msg->tx_header.Identifier = CAN_MASTER; // ?
+	msg->tx_header.MessageMarker = 0; //???
+	msg->tx_header.TxEventFifoControl = FDCAN_STORE_TX_EVENTS; //???
+	msg->tx_header.TxFrameType = FDCAN_DATA_FRAME;
+
+	//Original settings from Ben:
+	/*
+	msg->tx_header.DLC = 6; 			// message size of 8 byte - DataLength
+	msg->tx_header.IDE=CAN_ID_STD; 		// set identifier to standard - TxFrameType
+	msg->tx_header.RTR=CAN_RTR_DATA; 	// set data type to remote transmission request? - ???
+	msg->tx_header.StdId = CAN_MASTER;  // recipient CAN ID - ??? Probably Identifier
+	*/
 }
+
+//TODO: Check below for differences in packet structure?
 
 /// CAN Reply Packet Structure ///
 /// 16 bit position, between -4*pi and 4*pi

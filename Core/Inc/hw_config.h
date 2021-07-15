@@ -37,7 +37,7 @@
 #define LED         	GPIOC, GPIO_PIN_5	// LED Pin
 
 /* CAN */
-#define CAN_H			hcan1				// CAN handle
+#define CAN_H			hfdcan2				// CAN handle
 
 /* Other hardware-related constants */
 #define I_SCALE 			0.02014160156f  // Amps per A/D Count

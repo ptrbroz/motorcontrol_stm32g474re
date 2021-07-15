@@ -52,13 +52,13 @@ typedef struct{
 	uint8_t id;
 	uint8_t data[8];
 	FDCAN_RxHeaderTypeDef rx_header;
-	CAN_FilterTypeDef filter;
+	FDCAN_FilterTypeDef filter;
 }CANRxMessage ;
 
 typedef struct{
 	uint8_t id;
 	uint8_t data[6];
-	CAN_TxHeaderTypeDef tx_header;
+	FDCAN_TxHeaderTypeDef tx_header;
 }CANTxMessage ;
 
 void can_rx_init(CANRxMessage *msg);
