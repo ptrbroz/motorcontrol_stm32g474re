@@ -34,7 +34,14 @@ Core/Src/stm32g4xx_it.o: ../Core/Src/stm32g4xx_it.c ../Core/Inc/main.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
- ../Core/Inc/stm32g4xx_it.h
+ ../Core/Inc/stm32g4xx_it.h ../Core/Inc/structs.h ../Core/Inc/spi.h \
+ ../Core/Inc/main.h ../Core/Inc/gpio.h ../Core/Inc/adc.h \
+ ../Core/Inc/tim.h ../Core/Inc/position_sensor.h ../Core/Inc/fsm.h \
+ ../Core/Inc/drv8323.h ../Core/Inc/foc.h ../Core/Inc/calibration.h \
+ ../Core/Inc/fdcan.h ../Core/Inc/usart.h ../Core/Inc/fsm.h \
+ ../Core/Inc/spi.h ../Core/Inc/gpio.h ../Core/Inc/adc.h ../Core/Inc/foc.h \
+ ../Core/Inc/fdcan.h ../Core/Inc/position_sensor.h \
+ ../Core/Inc/hw_config.h ../Core/Inc/user_config.h
 
 ../Core/Inc/main.h:
 
@@ -109,3 +116,47 @@ Core/Src/stm32g4xx_it.o: ../Core/Src/stm32g4xx_it.c ../Core/Inc/main.h \
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h:
 
 ../Core/Inc/stm32g4xx_it.h:
+
+../Core/Inc/structs.h:
+
+../Core/Inc/spi.h:
+
+../Core/Inc/main.h:
+
+../Core/Inc/gpio.h:
+
+../Core/Inc/adc.h:
+
+../Core/Inc/tim.h:
+
+../Core/Inc/position_sensor.h:
+
+../Core/Inc/fsm.h:
+
+../Core/Inc/drv8323.h:
+
+../Core/Inc/foc.h:
+
+../Core/Inc/calibration.h:
+
+../Core/Inc/fdcan.h:
+
+../Core/Inc/usart.h:
+
+../Core/Inc/fsm.h:
+
+../Core/Inc/spi.h:
+
+../Core/Inc/gpio.h:
+
+../Core/Inc/adc.h:
+
+../Core/Inc/foc.h:
+
+../Core/Inc/fdcan.h:
+
+../Core/Inc/position_sensor.h:
+
+../Core/Inc/hw_config.h:
+
+../Core/Inc/user_config.h:
