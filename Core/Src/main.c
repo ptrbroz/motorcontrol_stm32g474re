@@ -24,6 +24,7 @@
 
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <drv8353.h>
 #include "main.h"
 #include "adc.h"
 #include "fdcan.h"
@@ -46,10 +47,10 @@
 #include "hw_config.h"
 #include "user_config.h"
 #include "fsm.h"
-#include "drv8323.h"
 #include "foc.h"
 #include "math_ops.h"
 #include "calibration.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -152,10 +153,12 @@ int main(void)
   MX_ADC3_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_GPIO_WritePin(LED1, 1 );
   HAL_GPIO_WritePin(LED2, 1 );
 
   /* Load settings from flash */
   //todo flash
+
 
   //preference_writer_init(&prefs, 6);
   //preference_writer_load(prefs);
@@ -227,7 +230,7 @@ int main(void)
   HAL_Delay(1);
   drv_write_CSACR(drv, 0x0, 0x1, 0x0, CSA_GAIN_40, 0x1, 0x0, 0x0, 0x0, SEN_LVL_1_0);
   HAL_Delay(1);
-  drv_write_OCPCR(drv, TRETRY_50US, DEADTIME_50NS, OCP_DEG_8US, OCP_DEG_8US, VDS_LVL_1_88);
+  drv_write_OCPCR(drv, TRETRY_50US, DEADTIME_50NS, OCP_DEG_8US, OCP_DEG_8US, VDS_LVL_1_50);
   HAL_Delay(1);
   drv_disable_gd(drv);
   HAL_Delay(1);
@@ -260,6 +263,9 @@ int main(void)
   /* Turn on interrupts */
   HAL_UART_Receive_IT(&huart2, (uint8_t *)Serial2RxBuffer, 1);
   HAL_TIM_Base_Start_IT(&htim1);
+
+  HAL_GPIO_WritePin(LED1, 0 );
+  HAL_GPIO_WritePin(LED2, 0 );
 
   /* USER CODE END 2 */
 

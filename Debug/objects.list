@@ -2,6 +2,7 @@
 "Core/Src/calibration.o"
 "Core/Src/drv8323.o"
 "Core/Src/fdcan.o"
+"Core/Src/flash_access.o"
 "Core/Src/foc.o"
 "Core/Src/fsm.o"
 "Core/Src/gpio.o"

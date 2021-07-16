@@ -11,6 +11,7 @@
 
 
 
+#include <drv8353.h>
 #include <stdint.h>
 #include "spi.h"
 #include "gpio.h"
@@ -19,7 +20,6 @@
 #include "position_sensor.h"
 //#include "preference_writer.h"
 #include "fsm.h"
-#include "drv8323.h"
 #include "foc.h"
 #include "calibration.h"
 #include "fdcan.h"

@@ -1,12 +1,12 @@
 /*
- * drv8323.c
+ * Adapted from Ben's drv8323.c by Petr B. july 2021
  *
- *  Created on: Aug 1, 2020
+ *  Original created on: Aug 1, 2020
  *      Author: ben
  */
 
 
-#include "drv8323.h"
+#include <drv8353.h>
 #include <stdio.h>
 #include "usart.h"
 #include "hw_config.h"

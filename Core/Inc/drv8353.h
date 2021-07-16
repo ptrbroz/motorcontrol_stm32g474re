@@ -1,14 +1,14 @@
 /*
- * drv8323.h
+ *  Adapted from Ben's drv 8323.h july 2021 (defines changed to reflect drv8353)
  *
  *  Created on: Aug 1, 2020
  *  Author: ben
  *
- *  See the datasheet for the DRV8323 here:  https://www.ti.com/product/DRV8323
+ *  See the datasheet for the DRV8323 here:  https://www.ti.com/product/DRV8353
  */
 
-#ifndef INC_DRV8323_H_
-#define INC_DRV8323_H_
+#ifndef INC_DRV8353_H_
+#define INC_DRV8353_H_
 
 #include "spi.h"
 #include <stdint.h>
@@ -25,7 +25,7 @@
 /// Drive Control Fields ///
 #define DIS_CPUV_EN         0x0     /// Charge pump UVLO fault
 #define DIS_CPUV_DIS        0x1
-#define DIS_GDF_EN          0x0     /// Gate drive fault
+#define DIS_GDF_EN          0x0     /// Gate drive fauilt
 #define DIS_GDF_DIS         0x1
 #define OTW_REP_EN          0x1     /// Over temp warning reported on nFAULT/FAULT bit
 #define OTW_REP_DIS         0x0
@@ -41,37 +41,37 @@
 /// Gate Drive HS Fields ///
 #define LOCK_ON             0x6
 #define LOCK_OFF            0x3
-#define IDRIVEP_HS_10MA     0x0     /// Gate drive high side turn on current
-#define IDRIVEP_HS_30MA     0x1
-#define IDRIVEP_HS_60MA     0x2
-#define IDRIVEP_HS_80MA     0x3
-#define IDRIVEP_HS_120MA    0x4
-#define IDRIVEP_HS_140MA    0x5
-#define IDRIVEP_HS_170MA    0x6
-#define IDRIVEP_HS_190MA    0x7
-#define IDRIVEP_HS_260MA    0x8
-#define IDRIVEP_HS_330MA    0x9
-#define IDRIVEP_HS_370MA    0xA
-#define IDRIVEP_HS_440MA    0xB
-#define IDRIVEP_HS_570MA    0xC
-#define IDRIVEP_HS_680MA    0xD
-#define IDRIVEP_HS_820MA    0xE
+#define IDRIVEP_HS_50MA     0x0     /// Gate drive high side turn on current
+#define IDRIVEP_HS_50MAb    0x1     //marked b since first two values are both listed as same val in drv8353 datasheet. Same later in file
+#define IDRIVEP_HS_100MA    0x2
+#define IDRIVEP_HS_150MA    0x3
+#define IDRIVEP_HS_300MA    0x4
+#define IDRIVEP_HS_350MA    0x5
+#define IDRIVEP_HS_400MA    0x6
+#define IDRIVEP_HS_450MA    0x7
+#define IDRIVEP_HS_550MA    0x8
+#define IDRIVEP_HS_600MA    0x9
+#define IDRIVEP_HS_650MA    0xA
+#define IDRIVEP_HS_700MA    0xB
+#define IDRIVEP_HS_850MA    0xC
+#define IDRIVEP_HS_900MA    0xD
+#define IDRIVEP_HS_950MA    0xE
 #define IDRIVEP_HS_1000MA   0xF
-#define IDRIVEN_HS_20MA     0x0     /// High side turn off current
-#define IDRIVEN_HS_60MA     0x1
-#define IDRIVEN_HS_120MA    0x2
-#define IDRIVEN_HS_160MA    0x3
-#define IDRIVEN_HS_240MA    0x4
-#define IDRIVEN_HS_280MA    0x5
-#define IDRIVEN_HS_340MA    0x6
-#define IDRIVEN_HS_380MA    0x7
-#define IDRIVEN_HS_520MA    0x8
-#define IDRIVEN_HS_660MA    0x9
-#define IDRIVEN_HS_740MA    0xA
-#define IDRIVEN_HS_880MA    0xB
-#define IDRIVEN_HS_1140MA   0xC
-#define IDRIVEN_HS_1360MA   0xD
-#define IDRIVEN_HS_1640MA   0xE
+#define IDRIVEN_HS_100MA    0x0     /// High side turn off current
+#define IDRIVEN_HS_100MAb   0x1
+#define IDRIVEN_HS_200MA    0x2
+#define IDRIVEN_HS_300MA    0x3
+#define IDRIVEN_HS_600MA    0x4
+#define IDRIVEN_HS_700MA    0x5
+#define IDRIVEN_HS_800MA    0x6
+#define IDRIVEN_HS_900MA    0x7
+#define IDRIVEN_HS_1100MA   0x8
+#define IDRIVEN_HS_1200MA   0x9
+#define IDRIVEN_HS_1300MA   0xA
+#define IDRIVEN_HS_1400MA   0xB
+#define IDRIVEN_HS_1700MA   0xC
+#define IDRIVEN_HS_1800MA   0xD
+#define IDRIVEN_HS_1900MA   0xE
 #define IDRIVEN_HS_2000MA   0xF
 
 /// Gate Drive LS Fields ///
@@ -79,41 +79,41 @@
 #define TDRIVE_1000NS       0x1
 #define TDRIVE_2000NS       0x2
 #define TDRIVE_4000NS       0x3
-#define IDRIVEP_LS_10MA     0x0     /// Gate drive high side turn on current
-#define IDRIVEP_LS_30MA     0x1
-#define IDRIVEP_LS_60MA     0x2
-#define IDRIVEP_LS_80MA     0x3
-#define IDRIVEP_LS_120MA    0x4
-#define IDRIVEP_LS_140MA    0x5
-#define IDRIVEP_LS_170MA    0x6
-#define IDRIVEP_LS_190MA    0x7
-#define IDRIVEP_LS_260MA    0x8
-#define IDRIVEP_LS_330MA    0x9
-#define IDRIVEP_LS_370MA    0xA
-#define IDRIVEP_LS_440MA    0xB
-#define IDRIVEP_LS_570MA    0xC
-#define IDRIVEP_LS_680MA    0xD
-#define IDRIVEP_LS_820MA    0xE
+#define IDRIVEP_LS_50MA     0x0     /// Gate drive high side turn on current
+#define IDRIVEP_LS_50MAb    0x1
+#define IDRIVEP_LS_100MA    0x2
+#define IDRIVEP_LS_150MA    0x3
+#define IDRIVEP_LS_300MA    0x4
+#define IDRIVEP_LS_350MA    0x5
+#define IDRIVEP_LS_400MA    0x6
+#define IDRIVEP_LS_450MA    0x7
+#define IDRIVEP_LS_550MA    0x8
+#define IDRIVEP_LS_600MA    0x9
+#define IDRIVEP_LS_650MA    0xA
+#define IDRIVEP_LS_700MA    0xB
+#define IDRIVEP_LS_850MA    0xC
+#define IDRIVEP_LS_900MA    0xD
+#define IDRIVEP_LS_950MA    0xE
 #define IDRIVEP_LS_1000MA   0xF
-#define IDRIVEN_LS_20MA     0x0     /// High side turn off current
-#define IDRIVEN_LS_60MA     0x1
-#define IDRIVEN_LS_120MA    0x2
-#define IDRIVEN_LS_160MA    0x3
-#define IDRIVEN_LS_240MA    0x4
-#define IDRIVEN_LS_280MA    0x5
-#define IDRIVEN_LS_340MA    0x6
-#define IDRIVEN_LS_380MA    0x7
-#define IDRIVEN_LS_520MA    0x8
-#define IDRIVEN_LS_660MA    0x9
-#define IDRIVEN_LS_740MA    0xA
-#define IDRIVEN_LS_880MA    0xB
-#define IDRIVEN_LS_1140MA   0xC
-#define IDRIVEN_LS_1360MA   0xD
-#define IDRIVEN_LS_1640MA   0xE
+#define IDRIVEN_LS_100MA    0x0     /// High side turn off current
+#define IDRIVEN_LS_100MAb   0x1
+#define IDRIVEN_LS_200MA    0x2
+#define IDRIVEN_LS_300MA    0x3
+#define IDRIVEN_LS_600MA    0x4
+#define IDRIVEN_LS_700MA    0x5
+#define IDRIVEN_LS_800MA    0x6
+#define IDRIVEN_LS_900MA    0x7
+#define IDRIVEN_LS_1100MA   0x8
+#define IDRIVEN_LS_1200MA   0x9
+#define IDRIVEN_LS_1300MA   0xA
+#define IDRIVEN_LS_1400MA   0xB
+#define IDRIVEN_LS_1700MA   0xC
+#define IDRIVEN_LS_1800MA   0xD
+#define IDRIVEN_LS_1900MA   0xE
 #define IDRIVEN_LS_2000MA   0xF
 
 /// OCP Control Fields ///
-#define TRETRY_4MS          0x0     /// VDS OCP and SEN OCP retry time
+#define TRETRY_8MS          0x0     /// VDS OCP and SEN OCP retry time
 #define TRETRY_50US         0x1
 #define DEADTIME_50NS       0x0     /// Deadtime
 #define DEADTIME_100NS      0x1
@@ -123,26 +123,26 @@
 #define OCP_RETRY           0x1
 #define OCP_REPORT          0x2
 #define OCP_NONE            0x3
-#define OCP_DEG_2US         0x0     /// OCP Deglitch Time
-#define OCP_DEG_4US         0x1
-#define OCP_DEG_6US         0x2
+#define OCP_DEG_1US         0x0     /// OCP Deglitch Time
+#define OCP_DEG_2US         0x1
+#define OCP_DEG_4US         0x2
 #define OCP_DEG_8US         0x3
 #define VDS_LVL_0_06        0x0
-#define VDS_LVL_0_13        0x1
-#define VDS_LVL_0_2         0x2
-#define VDS_LVL_0_26        0x3
-#define VDS_LVL_0_31        0x4
-#define VDS_LVL_0_45        0x5
-#define VDS_LVL_0_53        0x6
-#define VDS_LVL_0_6         0x7
-#define VDS_LVL_0_68        0x8
-#define VDS_LVL_0_75        0x9
-#define VDS_LVL_0_94        0xA
-#define VDS_LVL_1_13        0xB
-#define VDS_LVL_1_3         0xC
-#define VDS_LVL_1_5         0xD
-#define VDS_LVL_1_7         0xE
-#define VDS_LVL_1_88        0xF
+#define VDS_LVL_0_07        0x1
+#define VDS_LVL_0_08        0x2
+#define VDS_LVL_0_09        0x3
+#define VDS_LVL_0_10        0x4
+#define VDS_LVL_0_20        0x5
+#define VDS_LVL_0_30        0x6
+#define VDS_LVL_0_40        0x7
+#define VDS_LVL_0_50        0x8
+#define VDS_LVL_0_60        0x9
+#define VDS_LVL_0_70        0xA
+#define VDS_LVL_0_80        0xB
+#define VDS_LVL_0_90        0xC
+#define VDS_LVL_1_00        0xD
+#define VDS_LVL_1_50        0xE
+#define VDS_LVL_2_00        0xF
 
 /// CSA Control Fields ///
 #define CSA_FET_SP          0x0     /// Current sense amplifier positive input
@@ -191,4 +191,4 @@ void drv_print_faults(DRVStruct drv);
 
 
 
-#endif /* INC_DRV8323_H_ */
+#endif /* INC_DRV8353_H_ */

@@ -5,6 +5,7 @@
  *      Author: Ben
  */
 
+#include <drv8353.h>
 #include "fsm.h"
 #include "usart.h"
 #include <stdio.h>
@@ -16,7 +17,6 @@
 #include "foc.h"
 #include "math_ops.h"
 #include "position_sensor.h"
-#include "drv8323.h"
 
  void run_fsm(FSMStruct * fsmstate){
 	 /* run_fsm is run every commutation interrupt cycle */
