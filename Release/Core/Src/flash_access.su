@@ -1,0 +1,3 @@
+flash_access.c:32:6:load_from_flash	0	static
+flash_access.c:47:5:erase_reserved_flash	32	static
+flash_access.c:65:5:save_to_flash	24	static

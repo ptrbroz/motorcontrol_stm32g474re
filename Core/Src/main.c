@@ -50,6 +50,7 @@
 #include "foc.h"
 #include "math_ops.h"
 #include "calibration.h"
+#include "flash_access.h"
 
 /* USER CODE END Includes */
 
@@ -65,7 +66,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
-#define VERSION_NUM 2.0f
+#define VERSION_NUM 2.1f
 
 
 /* USER CODE END PM */
@@ -162,6 +163,7 @@ int main(void)
 
   //preference_writer_init(&prefs, 6);
   //preference_writer_load(prefs);
+  load_from_flash();
 
   /* Sanitize configs in case flash is empty*/
   if(E_ZERO==-1){E_ZERO = 0;}
@@ -266,6 +268,7 @@ int main(void)
 
   HAL_GPIO_WritePin(LED1, 0 );
   HAL_GPIO_WritePin(LED2, 0 );
+
 
   /* USER CODE END 2 */
 

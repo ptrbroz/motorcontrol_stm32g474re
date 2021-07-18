@@ -7,11 +7,11 @@
 
 
 
-void loadFromFlash();
+void load_from_flash();
 
-int eraseReservedFlash();
+int erase_reserved_flash();
 
-int saveToFlash();
+int save_to_flash();
 
 
 #endif

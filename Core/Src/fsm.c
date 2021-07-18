@@ -17,6 +17,7 @@
 #include "foc.h"
 #include "math_ops.h"
 #include "position_sensor.h"
+#include "flash_access.h"
 
  void run_fsm(FSMStruct * fsmstate){
 	 /* run_fsm is run every commutation interrupt cycle */
@@ -57,7 +58,8 @@
 				 preference_writer_close(&prefs);
 				 preference_writer_load(prefs);
 				 */
-				 printf("Skipping prefs, flash not yet solved");
+				 save_to_flash();
+				 load_from_flash();
 				 update_fsm(fsmstate, 27);
 			 }
 
@@ -206,6 +208,8 @@
 					//    prefs.close();
 					//    prefs.load();
 					//spi.SetMechOffset(M_OFFSET);
+					save_to_flash();
+					load_from_flash();
 					printf("\n\r  Saved new zero position:  %.4f\n\r\n\r", M_ZERO);
 					break;
 				}
@@ -356,6 +360,7 @@
 	 preference_writer_close(&prefs);
 	 preference_writer_load(prefs);
 	 */
+	 save_to_flash();
 	 enter_setup_state();
 
 	 fsmstate->bytecount = 0;

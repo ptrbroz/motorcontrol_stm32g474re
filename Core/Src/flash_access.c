@@ -15,7 +15,7 @@ Maybe replace with EEPROM emulation or implement wear-leveling in the future. (1
 
 
 #define PAGELEN 2048
-#define BANK2_START 0x0804000
+#define BANK2_START 0x08040000 //FIX
 #define RESERVED_PAGE  123      //max prog. upload reduced by 10k in platformio.ini, reserving pages 123 to 127 of bank 2
 #define RESERVED_ADDR BANK2_START + PAGELEN*RESERVED_PAGE
 
@@ -31,6 +31,8 @@ Maybe replace with EEPROM emulation or implement wear-leveling in the future. (1
   */
 void load_from_flash(){
     for(int i = 0;i<FLOATSCOUNT;i++){
+    	int temp = FLOATS_ADDR + i*sizeof(float);
+    	float read = *((float*)(FLOATS_ADDR + i*sizeof(float)));
         __float_reg[i] = *((float*)(FLOATS_ADDR + i*sizeof(float)));
     }
     for(int i = 0;i<INTSCOUNT;i++){
@@ -46,8 +48,8 @@ int erase_reserved_flash(){
     FLASH_EraseInitTypeDef eraseStruct;
     eraseStruct.TypeErase = FLASH_TYPEERASE_PAGES;
     eraseStruct.Banks = FLASH_BANK_2;
-    eraseStruct.Page = RESERVED_PAGE;
-    eraseStruct.NbPages = 1;
+    eraseStruct.Page = RESERVED_PAGE-2;
+    eraseStruct.NbPages = 10;
     uint32_t error;
     HAL_FLASHEx_Erase(&eraseStruct, &error);
     return error;
@@ -61,7 +63,7 @@ int erase_reserved_flash(){
   * @retval Zero when OK, nonzero when an error was encountered
   */
 int save_to_flash(){
-    unsigned int eraseError = eraseReservedFlash();
+    unsigned int eraseError = erase_reserved_flash();
     if(eraseError!=0xFFFFFFFF) return 1;
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_SR_ERRORS);
     HAL_StatusTypeDef status = HAL_FLASH_Unlock();

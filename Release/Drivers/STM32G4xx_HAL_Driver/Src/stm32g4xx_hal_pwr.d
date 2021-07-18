@@ -1,5 +1,5 @@
-Core/Src/drv8323.o: ../Core/Src/drv8323.c ../Core/Inc/drv8323.h \
- ../Core/Inc/spi.h ../Core/Inc/main.h \
+Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr.o: \
+ ../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr.c \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h \
  ../Core/Inc/stm32g4xx_hal_conf.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_rcc.h \
@@ -34,14 +34,7 @@ Core/Src/drv8323.o: ../Core/Src/drv8323.c ../Core/Inc/drv8323.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
- ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
- ../Core/Inc/usart.h ../Core/Inc/hw_config.h
-
-../Core/Inc/drv8323.h:
-
-../Core/Inc/spi.h:
-
-../Core/Inc/main.h:
+ ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h
 
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
 
@@ -112,7 +105,3 @@ Core/Src/drv8323.o: ../Core/Src/drv8323.c ../Core/Inc/drv8323.h \
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h:
 
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h:
-
-../Core/Inc/usart.h:
-
-../Core/Inc/hw_config.h:
