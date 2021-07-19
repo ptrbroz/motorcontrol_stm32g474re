@@ -13,15 +13,19 @@ Maybe replace with EEPROM emulation or implement wear-leveling in the future. (1
 #include "flash_access.h"
 #include "user_config.h"
 
+#include "stdio.h"
+
 
 #define PAGELEN 2048
-#define BANK2_START 0x08040000 //FIX
-#define RESERVED_PAGE  123      //max prog. upload reduced by 10k in platformio.ini, reserving pages 123 to 127 of bank 2
-#define RESERVED_ADDR BANK2_START + PAGELEN*RESERVED_PAGE
+#define BANK2_START 0x08040000
+#define BANK1_START 0x08000000
+#define RESERVED_PAGE  100      //max prog. upload reduced by 10k in platformio.ini, reserving pages 123 to 127 of bank 2
+#define RESERVED_ADDR BANK1_START + PAGELEN*RESERVED_PAGE
 
 #define FLOATSCOUNT 64
 #define INTSCOUNT 256
 
+//#define FLOATS_ADDR RESERVED_ADDR
 #define FLOATS_ADDR RESERVED_ADDR
 #define INTS_ADDR RESERVED_ADDR + FLOATSCOUNT*sizeof(float)
 
@@ -47,11 +51,12 @@ void load_from_flash(){
 int erase_reserved_flash(){
     FLASH_EraseInitTypeDef eraseStruct;
     eraseStruct.TypeErase = FLASH_TYPEERASE_PAGES;
-    eraseStruct.Banks = FLASH_BANK_2;
-    eraseStruct.Page = RESERVED_PAGE-2;
-    eraseStruct.NbPages = 10;
+    eraseStruct.Banks = FLASH_BANK_1;
+    eraseStruct.Page = RESERVED_PAGE;
+    eraseStruct.NbPages = 1;
     uint32_t error;
     HAL_FLASHEx_Erase(&eraseStruct, &error);
+    printf("Leaving erase flash.");
     return error;
 }
 
@@ -63,6 +68,7 @@ int erase_reserved_flash(){
   * @retval Zero when OK, nonzero when an error was encountered
   */
 int save_to_flash(){
+	printf("SaveToFlashy: ");
     unsigned int eraseError = erase_reserved_flash();
     if(eraseError!=0xFFFFFFFF) return 1;
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_SR_ERRORS);
@@ -71,17 +77,19 @@ int save_to_flash(){
     status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
     if(status!=HAL_OK) return 3;
 
-
+    printf(" >floats ");
     for(int i=0;i<FLOATSCOUNT;i=i+2){
         uint64_t doubleWord = *((uint64_t*) __float_reg + i); //read two floats from array as one uint64
         status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, FLOATS_ADDR + i*sizeof(float), doubleWord);
         if(status!=HAL_OK) return 4;
     }
+    printf(" >ints ");
     for(int i=0;i<INTSCOUNT;i=i+2){
         uint64_t doubleWord = *((uint64_t*) __int_reg + i);
         status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, FLOATS_ADDR + i*sizeof(int), doubleWord);
         if(status!=HAL_OK) return 5;
     }
     HAL_FLASH_Lock();
+    printf("> SaveToFlash All Ok\n");
     return 0;
 }

@@ -66,7 +66,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
-#define VERSION_NUM 2.1f
+#define VERSION_NUM 2.11f
 
 
 /* USER CODE END PM */
