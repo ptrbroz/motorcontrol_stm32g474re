@@ -20,7 +20,7 @@ Maybe replace with EEPROM emulation or implement wear-leveling in the future. (1
 #define BANK2_START 0x08040000
 #define BANK1_START 0x08000000
 #define RESERVED_PAGE  100      //max prog. upload reduced by 10k in platformio.ini, reserving pages 123 to 127 of bank 2
-#define RESERVED_ADDR BANK1_START + PAGELEN*RESERVED_PAGE
+#define RESERVED_ADDR BANK2_START + PAGELEN*RESERVED_PAGE
 
 #define FLOATSCOUNT 64
 #define INTSCOUNT 256
@@ -51,7 +51,7 @@ void load_from_flash(){
 int erase_reserved_flash(){
     FLASH_EraseInitTypeDef eraseStruct;
     eraseStruct.TypeErase = FLASH_TYPEERASE_PAGES;
-    eraseStruct.Banks = FLASH_BANK_1;
+    eraseStruct.Banks = FLASH_BANK_2;
     eraseStruct.Page = RESERVED_PAGE;
     eraseStruct.NbPages = 1;
     uint32_t error;
@@ -69,27 +69,40 @@ int erase_reserved_flash(){
   */
 int save_to_flash(){
 	printf("SaveToFlashy: ");
-    unsigned int eraseError = erase_reserved_flash();
-    if(eraseError!=0xFFFFFFFF) return 1;
-    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_SR_ERRORS);
-    HAL_StatusTypeDef status = HAL_FLASH_Unlock();
-    if(status!=HAL_OK) return 2;
-    status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
-    if(status!=HAL_OK) return 3;
 
-    printf(" >floats ");
+	HAL_StatusTypeDef status = HAL_FLASH_Unlock();
+	if(status!=HAL_OK) return 1;
+
+	status = HAL_FLASH_OB_Unlock();
+	if(status!=HAL_OK) return 2;
+
+	printf(" >unlocked ");
+
+    unsigned int eraseError = erase_reserved_flash();
+    if(eraseError!=0xFFFFFFFF) return 3;
+    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_SR_ERRORS);
+
+    printf(" >erased ");
+
+    status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+    if(status!=HAL_OK) return 5;
+
+    printf(" >floatss ");
+
     for(int i=0;i<FLOATSCOUNT;i=i+2){
         uint64_t doubleWord = *((uint64_t*) __float_reg + i); //read two floats from array as one uint64
         status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, FLOATS_ADDR + i*sizeof(float), doubleWord);
-        if(status!=HAL_OK) return 4;
+        if(status!=HAL_OK) {printf("fail f %d", i);return 6;}
     }
     printf(" >ints ");
-    for(int i=0;i<INTSCOUNT;i=i+2){
+    printf("SKIP ");
+    for(int i=300;i<INTSCOUNT;i=i+2){
         uint64_t doubleWord = *((uint64_t*) __int_reg + i);
         status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, FLOATS_ADDR + i*sizeof(int), doubleWord);
-        if(status!=HAL_OK) return 5;
+        if(status!=HAL_OK) {printf("fail i %d", i);return 7;}
     }
     HAL_FLASH_Lock();
+    HAL_FLASH_OB_Lock();
     printf("> SaveToFlash All Ok\n");
     return 0;
 }
