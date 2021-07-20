@@ -66,7 +66,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
-#define VERSION_NUM 2.11f
+#define VERSION_NUM 2.1f
 
 
 /* USER CODE END PM */
@@ -158,12 +158,7 @@ int main(void)
   HAL_GPIO_WritePin(LED2, 1 );
 
   /* Load settings from flash */
-  //todo flash
-
-
-  //preference_writer_init(&prefs, 6);
-  //preference_writer_load(prefs);
-  load_from_flash();
+    load_from_flash();
 
   /* Sanitize configs in case flash is empty*/
   if(E_ZERO==-1){E_ZERO = 0;}
@@ -249,8 +244,14 @@ int main(void)
   /*
   can_rx_init(&can_rx);
   can_tx_init(&can_tx);
-  HAL_CAN_Start(&CAN_H); //start CAN
-  __HAL_CAN_ENABLE_IT(&CAN_H, CAN_IT_RX_FIFO0_MSG_PENDING); // Start can interrupt
+  HAL_CAN_Start(&CAN_H); start CAN
+  __HAL_CAN_ENABLE_IT(&CAN_H, FDCAN_IT_RX_FIFO0_MSG_PENDING);  Start can interrupt
+	*/
+
+  can_rx_init(&can_rx);
+  can_tx_init(&can_tx);
+  HAL_FDCAN_Start(&CAN_H);
+  //TODO __HAL_FDCAN_ENABLE_IT(&CAN_H, );
 
   /* Set Interrupt Priorities */
   NVIC_SetPriority(PWM_ISR, 1); // commutation > communication
