@@ -361,6 +361,7 @@
 	 preference_writer_load(prefs);
 	 */
 	 save_to_flash();
+	 load_from_flash();
 	 enter_setup_state();
 
 	 fsmstate->bytecount = 0;

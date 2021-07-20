@@ -5,4 +5,4 @@ fsm.c:173:7:update_fsm	16	static
 fsm.c:241:7:enter_menu_state	8	static
 fsm.c:257:7:enter_setup_state	24	static
 fsm.c:282:7:process_user_input	16	static
-fsm.c:371:7:enter_motor_mode	4	static
+fsm.c:372:7:enter_motor_mode	4	static

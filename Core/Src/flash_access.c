@@ -19,7 +19,7 @@ Maybe replace with EEPROM emulation or implement wear-leveling in the future. (1
 #define PAGELEN 2048
 #define BANK2_START 0x08040000
 #define BANK1_START 0x08000000
-#define RESERVED_PAGE  100      //max prog. upload reduced by 10k in platformio.ini, reserving pages 123 to 127 of bank 2
+#define RESERVED_PAGE  126      //max prog. upload reduced by 10k in platformio.ini, reserving pages 123 to 127 of bank 2
 #define RESERVED_ADDR BANK2_START + PAGELEN*RESERVED_PAGE
 
 #define FLOATSCOUNT 64
@@ -34,10 +34,23 @@ Maybe replace with EEPROM emulation or implement wear-leveling in the future. (1
   * @brief  Loads floats and ints from flash memory into global arrays
   */
 void load_from_flash(){
-    for(int i = 0;i<FLOATSCOUNT;i++){
-    	int temp = FLOATS_ADDR + i*sizeof(float);
-    	float read = *((float*)(FLOATS_ADDR + i*sizeof(float)));
-        __float_reg[i] = *((float*)(FLOATS_ADDR + i*sizeof(float)));
+    for(int i = 0;i<FLOATSCOUNT;i=i+2){
+    	//int temp = FLOATS_ADDR + i*sizeof(float);
+    	//float read = *((float*)(FLOATS_ADDR + i*sizeof(float)));
+
+    	//heureka!!
+    	int betterAdr = FLOATS_ADDR + i*4;
+    	uint64_t doubleWord = *((uint64_t*)(betterAdr));
+
+    	uint32_t word1 = doubleWord&0x00000000ffffffff;
+    	uint32_t word2 = (doubleWord&0xffffffff00000000) >> 32;
+
+    	float float1 = *((float*)(&word1));
+    	float float2 = *((float*)(&word2));
+
+    	__float_reg[i] =   float1;
+    	__float_reg[i+1] = float2;
+
     }
     for(int i = 0;i<INTSCOUNT;i++){
         __int_reg[i] = *((int*)(INTS_ADDR + i*sizeof(float)));
@@ -90,7 +103,9 @@ int save_to_flash(){
     printf(" >floatss ");
 
     for(int i=0;i<FLOATSCOUNT;i=i+2){
-        uint64_t doubleWord = *((uint64_t*) __float_reg + i); //read two floats from array as one uint64
+        uint64_t doubleWord = *((uint64_t*) (__float_reg + i)); //read two floats from array as one uint64
+        //float floatArr[2] = {4.2, 4.22};
+        //doubleWord = *((uint64_t*) (floatArr));
         status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, FLOATS_ADDR + i*sizeof(float), doubleWord);
         if(status!=HAL_OK) {printf("fail f %d", i);return 6;}
     }
