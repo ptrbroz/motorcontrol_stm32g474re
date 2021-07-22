@@ -245,13 +245,13 @@ int main(void)
   can_rx_init(&can_rx);
   can_tx_init(&can_tx);
   HAL_CAN_Start(&CAN_H); start CAN
-  __HAL_CAN_ENABLE_IT(&CAN_H, FDCAN_IT_RX_FIFO0_MSG_PENDING);  Start can interrupt
+  __HAL_CAN_ENABLE_IT(&CAN_H, CAN_IT_RX_FIFO0_MSG_PENDING);  Start can interrupt
 	*/
 
   can_rx_init(&can_rx);
   can_tx_init(&can_tx);
   HAL_FDCAN_Start(&CAN_H);
-  //TODO __HAL_FDCAN_ENABLE_IT(&CAN_H, );
+  __HAL_FDCAN_ENABLE_IT(&CAN_H, FDCAN_IT_RX_FIFO0_NEW_MESSAGE); //PB: Not sure if this should be FIFO0 or FIFO1
 
   /* Set Interrupt Priorities */
   NVIC_SetPriority(PWM_ISR, 1); // commutation > communication
