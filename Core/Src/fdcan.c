@@ -24,6 +24,8 @@
 #include "hw_config.h"
 #include "user_config.h"
 #include "math_ops.h"
+#include <stdio.h>
+
 
 /* USER CODE END 0 */
 
@@ -46,16 +48,16 @@ void MX_FDCAN2_Init(void)
   hfdcan2.Init.AutoRetransmission = DISABLE;
   hfdcan2.Init.TransmitPause = DISABLE;
   hfdcan2.Init.ProtocolException = DISABLE;
-  hfdcan2.Init.NominalPrescaler = 1;
+  hfdcan2.Init.NominalPrescaler = 3;
   hfdcan2.Init.NominalSyncJumpWidth = 1;
-  hfdcan2.Init.NominalTimeSeg1 = 2;
+  hfdcan2.Init.NominalTimeSeg1 = 12;
   hfdcan2.Init.NominalTimeSeg2 = 2;
-  hfdcan2.Init.DataPrescaler = 1;
+  hfdcan2.Init.DataPrescaler = 3;
   hfdcan2.Init.DataSyncJumpWidth = 1;
-  hfdcan2.Init.DataTimeSeg1 = 1;
-  hfdcan2.Init.DataTimeSeg2 = 1;
-  hfdcan2.Init.StdFiltersNbr = 0;
-  hfdcan2.Init.ExtFiltersNbr = 0;
+  hfdcan2.Init.DataTimeSeg1 = 12;
+  hfdcan2.Init.DataTimeSeg2 = 2;
+  hfdcan2.Init.StdFiltersNbr = 1;
+  hfdcan2.Init.ExtFiltersNbr = 1;
   hfdcan2.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
   if (HAL_FDCAN_Init(&hfdcan2) != HAL_OK)
   {
@@ -127,12 +129,15 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
 
 /* USER CODE BEGIN 1 */
 void can_rx_init(CANRxMessage *msg){
-	msg->filter.FilterID1 = CAN_ID<<5;
-	msg->filter.FilterID2 = 0xFFF;
+	//msg->filter.FilterID1 = CAN_ID<<5;
+	msg->filter.FilterID1 = 0x000;
+	msg->filter.FilterID2 = 0x7FF;
 	msg->filter.FilterIndex = 0;
-	msg->filter.FilterType = FDCAN_FILTER_MASK;
+	msg->filter.FilterType = FDCAN_FILTER_RANGE;
 	msg->filter.IdType = FDCAN_STANDARD_ID;
 	msg->filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+	//msg->filter.FilterConfig = FDCAN_FILTER_DISABLE;
+
 
 	HAL_FDCAN_ConfigFilter(&CAN_H, &msg->filter);
 
@@ -224,9 +229,9 @@ void unpack_cmd(CANRxMessage msg, float *commands){// ControllerStruct * control
         commands[2] = uint_to_float(kp_int, KP_MIN, KP_MAX, 12);
         commands[3] = uint_to_float(kd_int, KD_MIN, KD_MAX, 12);
         commands[4] = uint_to_float(t_int, -I_MAX*KT*GR, I_MAX*KT*GR, 12);
-    //printf("Received   ");
-    //printf("%.3f  %.3f  %.3f  %.3f  %.3f   %.3f", controller->p_des, controller->v_des, controller->kp, controller->kd, controller->t_ff, controller->i_q_ref);
-    //printf("\n\r");
+    printf("Received   ");
+    printf("%d %d %d %d %d", p_int, v_int, kp_int, kd_int, t_int);
+    printf("\n\r");
     }
 /* USER CODE END 1 */
 

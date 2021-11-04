@@ -24,7 +24,6 @@
 
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include <drv8353.h>
 #include "main.h"
 #include "adc.h"
 #include "fdcan.h"
@@ -250,8 +249,14 @@ int main(void)
 
   can_rx_init(&can_rx);
   can_tx_init(&can_tx);
+
+  //global filter -- accept nonmatching
+  HAL_FDCAN_ConfigGlobalFilter(&CAN_H, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_FILTER_REMOTE, FDCAN_FILTER_REMOTE);
+
   HAL_FDCAN_Start(&CAN_H);
-  __HAL_FDCAN_ENABLE_IT(&CAN_H, FDCAN_IT_RX_FIFO0_NEW_MESSAGE); //PB: Not sure if this should be FIFO0 or FIFO1
+  __HAL_FDCAN_ENABLE_IT(&CAN_H, FDCAN_IT_RX_FIFO0_NEW_MESSAGE);
+
+
 
   /* Set Interrupt Priorities */
   NVIC_SetPriority(PWM_ISR, 1); // commutation > communication
@@ -267,6 +272,7 @@ int main(void)
   HAL_UART_Receive_IT(&huart2, (uint8_t *)Serial2RxBuffer, 1);
   HAL_TIM_Base_Start_IT(&htim1);
 
+
   HAL_GPIO_WritePin(LED1, 0 );
   HAL_GPIO_WritePin(LED2, 0 );
 
@@ -279,6 +285,11 @@ int main(void)
   {
 	  HAL_Delay(150);
 	  drv_print_faults(drv);
+	  uint32_t err = hfdcan2.ErrorCode;
+	  pack_reply(&can_tx, CAN_ID,  0.0, 0.0, 0.0);	// Pack response
+	  HAL_FDCAN_AddMessageToTxFifoQ(&CAN_H, &can_tx.tx_header, can_tx.data); //replacement for above line
+	  printf("sent\n");
+
 	  if(state.state==MOTOR_MODE){
 	  //	  printf("%.2f %.2f %.2f %.2f %.2f\r\n", controller.i_a, controller.i_b, controller.i_d, controller.i_q, controller.dtheta_elec);
 	  }

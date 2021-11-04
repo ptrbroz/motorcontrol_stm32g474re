@@ -104,6 +104,7 @@
 			case SETUP_MODE:
 				//printf("Entering Setup\r\n");
 				enter_setup_state();
+
 				break;
 			case ENCODER_MODE:
 				//printf("Entering Encoder Mode\r\n");
@@ -353,7 +354,6 @@
 
 	 /* Write new settings to flash */
 
-	 //todo flash
 	 /*
 	 if (!preference_writer_ready(prefs)){ preference_writer_open(&prefs);}
 	 preference_writer_flush(&prefs);

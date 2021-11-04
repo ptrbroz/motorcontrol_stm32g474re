@@ -1,5 +1,4 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/drv8353.h \
- ../Core/Inc/spi.h ../Core/Inc/main.h \
+Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h \
  ../Core/Inc/stm32g4xx_hal_conf.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_rcc.h \
@@ -35,19 +34,16 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/drv8353.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
- ../Core/Inc/main.h ../Core/Inc/adc.h ../Core/Inc/fdcan.h \
+ ../Core/Inc/adc.h ../Core/Inc/main.h ../Core/Inc/fdcan.h \
  ../Core/Inc/spi.h ../Core/Inc/tim.h ../Core/Inc/usart.h \
- ../Core/Inc/gpio.h ../Core/Inc/structs.h ../Core/Inc/gpio.h \
- ../Core/Inc/adc.h ../Core/Inc/tim.h ../Core/Inc/position_sensor.h \
- ../Core/Inc/fsm.h ../Core/Inc/foc.h ../Core/Inc/calibration.h \
- ../Core/Inc/fdcan.h ../Core/Inc/position_sensor.h \
- ../Core/Inc/hw_config.h ../Core/Inc/user_config.h ../Core/Inc/fsm.h \
- ../Core/Inc/foc.h ../Core/Inc/math_ops.h ../Core/Inc/calibration.h \
+ ../Core/Inc/gpio.h ../Core/Inc/structs.h ../Core/Inc/drv8353.h \
+ ../Core/Inc/spi.h ../Core/Inc/gpio.h ../Core/Inc/adc.h ../Core/Inc/tim.h \
+ ../Core/Inc/position_sensor.h ../Core/Inc/fsm.h ../Core/Inc/foc.h \
+ ../Core/Inc/calibration.h ../Core/Inc/fdcan.h \
+ ../Core/Inc/position_sensor.h ../Core/Inc/hw_config.h \
+ ../Core/Inc/user_config.h ../Core/Inc/fsm.h ../Core/Inc/foc.h \
+ ../Core/Inc/math_ops.h ../Core/Inc/calibration.h \
  ../Core/Inc/flash_access.h ../Core/Inc/user_config.h
-
-../Core/Inc/drv8353.h:
-
-../Core/Inc/spi.h:
 
 ../Core/Inc/main.h:
 
@@ -121,9 +117,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/drv8353.h \
 
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h:
 
-../Core/Inc/main.h:
-
 ../Core/Inc/adc.h:
+
+../Core/Inc/main.h:
 
 ../Core/Inc/fdcan.h:
 
@@ -136,6 +132,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/drv8353.h \
 ../Core/Inc/gpio.h:
 
 ../Core/Inc/structs.h:
+
+../Core/Inc/drv8353.h:
+
+../Core/Inc/spi.h:
 
 ../Core/Inc/gpio.h:
 

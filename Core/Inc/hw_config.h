@@ -11,7 +11,7 @@
 
 /* ISRs */
 #define PWM_ISR			TIM1_UP_TIM16_IRQn	// PWM Timer ISR
-#define CAN_ISR			FDCAN1_IT0_IRQn		// CAN Receive ISR
+#define CAN_ISR			FDCAN2_IT0_IRQn		// CAN Receive ISR
 
 /* ADC */
 
