@@ -250,8 +250,6 @@ int main(void)
   can_rx_init(&can_rx);
   can_tx_init(&can_tx);
 
-  //global filter -- accept nonmatching
-  HAL_FDCAN_ConfigGlobalFilter(&CAN_H, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_FILTER_REMOTE, FDCAN_FILTER_REMOTE);
 
   HAL_FDCAN_Start(&CAN_H);
   HAL_FDCAN_ActivateNotification(&CAN_H, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);

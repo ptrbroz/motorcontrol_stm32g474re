@@ -1,4 +1,4 @@
 core_cm4.h:1809:22:__NVIC_SetPriority	16	static
 main.c:122:5:main	40	static
-main.c:306:6:SystemClock_Config	168	static
-main.c:361:6:Error_Handler	4	static
+main.c:304:6:SystemClock_Config	168	static
+main.c:359:6:Error_Handler	4	static
