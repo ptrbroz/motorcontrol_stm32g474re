@@ -8772,13 +8772,13 @@ void ps_sample(EncoderStruct * encoder, float dt){
  8004da4:	f44f 4100 	mov.w	r1, #32768	; 0x8000
  8004da8:	f04f 4090 	mov.w	r0, #1207959552	; 0x48000000
  8004dac:	f003 ff48 	bl	8008c40 <HAL_GPIO_WritePin>
-	HAL_SPI_TransmitReceive(&ENC_SPI, (uint8_t*)encoder->spi_tx_buff, (uint8_t *)encoder->spi_rx_buff, 1, 100);
+	HAL_SPI_TransmitReceive(&ENC_SPI, (uint8_t*)encoder->spi_tx_buff, (uint8_t *)encoder->spi_rx_buff, 2, 100);
  8004db0:	6879      	ldr	r1, [r7, #4]
  8004db2:	687b      	ldr	r3, [r7, #4]
  8004db4:	1c9a      	adds	r2, r3, #2
  8004db6:	2364      	movs	r3, #100	; 0x64
  8004db8:	9300      	str	r3, [sp, #0]
- 8004dba:	2301      	movs	r3, #1
+ 8004dba:	2302      	movs	r3, #2
  8004dbc:	4899      	ldr	r0, [pc, #612]	; (8005024 <ps_sample+0x2cc>)
  8004dbe:	f005 f836 	bl	8009e2e <HAL_SPI_TransmitReceive>
 	while( ENC_SPI.State == HAL_SPI_STATE_BUSY );  					// wait for transmission complete
@@ -8799,6 +8799,7 @@ void ps_sample(EncoderStruct * encoder, float dt){
  8004de2:	461a      	mov	r2, r3
  8004de4:	687b      	ldr	r3, [r7, #4]
  8004de6:	675a      	str	r2, [r3, #116]	; 0x74
+
 
 	/* Linearization */
 	int off_1 = encoder->offset_lut[(encoder->raw)>>9];				// lookup table lower entry
@@ -9223,9 +9224,9 @@ void MX_SPI3_Init(void)
  8005156:	4b18      	ldr	r3, [pc, #96]	; (80051b8 <MX_SPI3_Init+0x74>)
  8005158:	2200      	movs	r2, #0
  800515a:	609a      	str	r2, [r3, #8]
-  hspi3.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi3.Init.DataSize = SPI_DATASIZE_16BIT;
  800515c:	4b16      	ldr	r3, [pc, #88]	; (80051b8 <MX_SPI3_Init+0x74>)
- 800515e:	f44f 7240 	mov.w	r2, #768	; 0x300
+ 800515e:	f44f 6270 	mov.w	r2, #3840	; 0xf00
  8005162:	60da      	str	r2, [r3, #12]
   hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
  8005164:	4b14      	ldr	r3, [pc, #80]	; (80051b8 <MX_SPI3_Init+0x74>)
