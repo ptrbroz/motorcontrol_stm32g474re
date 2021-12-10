@@ -4,9 +4,10 @@
 
 /* Timer and PWM */
 #define TIM_PWM			htim1				// PWM/ISR timer handle
-#define TIM_CH_U		TIM_CHANNEL_1		// Terminal U timer channel
+#define TIM_CH_W		TIM_CHANNEL_1		// Terminal U timer channel
 #define TIM_CH_V		TIM_CHANNEL_2		// Terminal V timer channel
-#define TIM_CH_W		TIM_CHANNEL_3		// Terminal W timer channel
+#define TIM_CH_U		TIM_CHANNEL_3		// Terminal W timer channel
+//note : swapped U and W
 #define INVERT_DTC		1					// PWM inverting (1) or non-inverting (0)
 
 /* ISRs */

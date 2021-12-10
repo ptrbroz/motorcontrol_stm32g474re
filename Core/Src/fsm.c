@@ -200,6 +200,7 @@
 					fsmstate->ready = 0;
 					break;
 				case ZERO_CMD:
+					printf("Zero pos command entry\n\r");
 					comm_encoder.m_zero = 0;
 					ps_sample(&comm_encoder, DT);
 					HAL_Delay(20);
