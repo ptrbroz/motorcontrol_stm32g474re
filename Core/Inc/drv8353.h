@@ -4,7 +4,7 @@
  *  Created on: Aug 1, 2020
  *  Author: ben
  *
- *  See the datasheet for the DRV8323 here:  https://www.ti.com/product/DRV8353
+ *  See the datasheet for the DRV8323 here:  https://www.ti.com/product/DRV8323
  */
 
 #ifndef INC_DRV8353_H_

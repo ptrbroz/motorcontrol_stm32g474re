@@ -153,8 +153,6 @@ int main(void)
   MX_ADC3_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_GPIO_WritePin(LED1, 1 );
-  HAL_GPIO_WritePin(LED2, 1 );
 
   /* Load settings from flash */
     load_from_flash();
@@ -217,8 +215,29 @@ int main(void)
   HAL_GPIO_WritePin(ENABLE_PIN, GPIO_PIN_SET );
   HAL_Delay(1);
   //drv_calibrate(drv);
+
+
   HAL_Delay(1);
   drv_write_DCR(drv, 0x0, DIS_GDF_EN, 0x0, PWM_MODE_3X, 0x0, 0x0, 0x0, 0x0, 0x1);
+
+
+
+  uint16_t val = 9;
+  uint16_t mask = 0x07FF;
+
+  /*
+  while(1){
+	  uint16_t retVal = drv_spi_write(&drv, (LSR<<11)|(val&mask));
+	  printf("sent %d to %d, gotten %d\n\r", val, (LSR<<12), retVal);
+	  HAL_Delay(1);
+
+	  retVal = drv_spi_write(&drv, (1<<16)|(LSR<<11)|(val&mask));
+	  printf("reading from %d, gotten %d\n\r", (LSR<<12), retVal);
+	  HAL_Delay(1);
+	  //val++;
+  }
+  */
+
   HAL_Delay(1);
   drv_write_CSACR(drv, 0x0, 0x1, 0x0, CSA_GAIN_40, 0x0, 0x1, 0x1, 0x1, SEN_LVL_1_0);
   HAL_Delay(1);
@@ -232,6 +251,10 @@ int main(void)
   HAL_Delay(1);
   //drv_enable_gd(drv);   */
   printf("ADC A OFFSET: %d     ADC B OFFSET: %d\r\n", controller.adc_a_offset, controller.adc_b_offset);
+
+
+  HAL_GPIO_WritePin(LED1, 1 );
+  HAL_GPIO_WritePin(LED2, 1 );
 
   /* Turn on PWM */
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
