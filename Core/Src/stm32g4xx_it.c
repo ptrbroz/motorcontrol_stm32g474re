@@ -263,7 +263,6 @@ void FDCAN2_IT0_IRQHandler(void)
   HAL_FDCAN_IRQHandler(&hfdcan2);
   /* USER CODE BEGIN FDCAN2_IT0_IRQn 1 */
   HAL_FDCAN_GetRxMessage(&CAN_H, FDCAN_RX_FIFO0, &can_rx.rx_header, can_rx.data);	// Read CAN
-  printf("stm32g4xx_it msg gotten!\n\r");
   uint32_t TxMailbox;
   //pack_reply(&can_tx, CAN_ID,  comm_encoder.angle_multiturn[0]/GR, comm_encoder.velocity/GR, controller.i_q_filt*KT*GR);	// Pack response
 

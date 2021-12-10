@@ -13,6 +13,9 @@
 #include "hw_config.h"
 #include "user_config.h"
 
+#include <stdio.h>
+
+
 void set_dtc(ControllerStruct *controller){
 
 	/* Invert duty cycle if that's how hardware is configured */
@@ -26,6 +29,10 @@ void set_dtc(ControllerStruct *controller){
 		dtc_v = 1.0f - controller->dtc_v;
 		dtc_w = 1.0f - controller->dtc_w;
 	}
+
+	printf("foc set_pwm_dtcs: %f %f %f \n\r", dtc_u, dtc_v, dtc_w);
+
+
 	/* Handle phase order swapping so that voltage/current/torque match encoder direction */
 	if(!PHASE_ORDER){
 		__HAL_TIM_SET_COMPARE(&TIM_PWM, TIM_CH_U, ((TIM_PWM.Instance->ARR))*dtc_u);

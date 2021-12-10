@@ -217,9 +217,13 @@ int main(void)
   //drv_calibrate(drv);
 
 
+
   HAL_Delay(1);
   drv_write_DCR(drv, 0x0, DIS_GDF_EN, 0x0, PWM_MODE_3X, 0x0, 0x0, 0x0, 0x0, 0x1);
 
+
+  //TODO REMOVE
+  HAL_GPIO_WritePin(ENABLE_PIN, GPIO_PIN_RESET );
 
 
   uint16_t val = 9;
@@ -306,7 +310,8 @@ int main(void)
   while (1)
   {
 	  HAL_Delay(150);
-	  drv_print_faults(drv);
+	  //drv_print_faults(drv);
+
 	  //pack_reply(&can_tx, CAN_ID,  0.0, 0.0, 0.0);	// Pack response
 	  //HAL_FDCAN_AddMessageToTxFifoQ(&CAN_H, &can_tx.tx_header, can_tx.data); //replacement for above line
 	  //printf("sent\n");
