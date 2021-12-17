@@ -224,6 +224,10 @@ void TIM1_UP_TIM16_IRQHandler(void)
   /* Sample position sensor */
   ps_sample(&comm_encoder, DT);
 
+  static int ledVal = 1;
+  ledVal = !ledVal;
+  HAL_GPIO_WritePin(LED1, ledVal );
+
   /* Run Finite State Machine */
   run_fsm(&state);
 

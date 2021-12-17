@@ -30,7 +30,7 @@ void set_dtc(ControllerStruct *controller){
 		dtc_w = 1.0f - controller->dtc_w;
 	}
 
-	printf("foc setDtcs: %f %f %f \n\r", dtc_u, dtc_v, dtc_w);
+	//printf("foc setDtcs: %f %f %f \n\r", dtc_u, dtc_v, dtc_w);
 
 
 	/* Handle phase order swapping so that voltage/current/torque match encoder direction */
@@ -70,6 +70,7 @@ void analog_sample (ControllerStruct *controller){
     controller->i_a = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);    // Calculate phase currents from ADC readings
     controller->i_b = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
     controller->i_c = -controller->i_a - controller->i_b;
+
 
 }
 
@@ -277,7 +278,9 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
        limit_norm(&controller->v_d, &controller->v_q, controller->v_max);
 
        abc(controller->theta_elec + 1.5f*DT*controller->dtheta_elec, controller->v_d, controller->v_q, &controller->v_u, &controller->v_v, &controller->v_w); //inverse dq0 transform on voltages
-       svm(controller->v_max, controller->v_u, controller->v_v, controller->v_w, &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
+       //orig svm(controller->v_max, controller->v_u, controller->v_v, controller->v_w, &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
+
+       svm(controller->v_max, 0*(controller->v_u), 0*(controller->v_v), 0*(controller->v_w), &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
 
        set_dtc(controller);
 
