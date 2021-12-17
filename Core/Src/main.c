@@ -223,7 +223,7 @@ int main(void)
 
 
   // REMOVE
-  //HAL_GPIO_WritePin(ENABLE_PIN, GPIO_PIN_RESET );
+  HAL_GPIO_WritePin(ENABLE_PIN, GPIO_PIN_RESET );
 
 
   uint16_t val = 9;
@@ -310,7 +310,7 @@ int main(void)
   while (1)
   {
 	  HAL_Delay(150);
-	  drv_print_faults(drv);
+	  //drv_print_faults(drv);
 
 	  //pack_reply(&can_tx, CAN_ID,  0.0, 0.0, 0.0);	// Pack response
 	  //HAL_FDCAN_AddMessageToTxFifoQ(&CAN_H, &can_tx.tx_header, can_tx.data); //replacement for above line
