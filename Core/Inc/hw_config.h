@@ -43,6 +43,10 @@
 
 /* Other hardware-related constants */
 #define I_SCALE 			0.02014160156f  // Amps per A/D Count
+//measurements 07.01.2022
+//input U on adcs a, b = 1.73 1.65
+//raw measurements from adcs - 2058, 1955
+//voltage on shunt resistors - 0
 //#define V_SCALE_ORIG 		0.012890625f    // Bus volts per A/D Count
 #define V_SCALE				16*0.012890625f // Bus volts per A/D Count
 #define DTC_MAX 			0.94f          	// Max duty cycle

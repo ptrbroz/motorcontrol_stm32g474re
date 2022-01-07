@@ -76,7 +76,6 @@ void analog_sample (ControllerStruct *controller){
     controller->i_b = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
     controller->i_c = -controller->i_a - controller->i_b;
 
-    printf("sampleEnd\n\r");
 
 }
 
