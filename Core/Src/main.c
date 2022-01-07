@@ -311,7 +311,8 @@ int main(void)
   {
 	  HAL_Delay(150);
 	  drv_print_faults(drv);
-	  printf("vbus %f raw %d \n\r", controller.v_bus, controller.adc_vbus_raw);
+	  printf("Ria,b %f %f \n\r", controller.adc_a_raw, controller.adc_b_raw);
+	  //printf("ia,b %f %f \n\r", controller.i_a, controller.i_b);
 	  //pack_reply(&can_tx, CAN_ID,  0.0, 0.0, 0.0);	// Pack response
 	  //HAL_FDCAN_AddMessageToTxFifoQ(&CAN_H, &can_tx.tx_header, can_tx.data); //replacement for above line
 	  //printf("sent\n");

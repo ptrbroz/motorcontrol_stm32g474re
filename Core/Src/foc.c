@@ -47,7 +47,16 @@ void set_dtc(ControllerStruct *controller){
 }
 
 void analog_sample (ControllerStruct *controller){
-	/* Sampe ADCs */
+	/* Sample ADCs */
+
+	HAL_ADC_Start(&ADC_CH_IA);
+	HAL_ADC_PollForConversion(&ADC_CH_IA, HAL_MAX_DELAY);
+	HAL_ADC_Start(&ADC_CH_IB);
+	HAL_ADC_PollForConversion(&ADC_CH_IB, HAL_MAX_DELAY);
+
+	HAL_ADC_Start(&ADC_CH_MAIN);
+	HAL_ADC_PollForConversion(&ADC_CH_MAIN, HAL_MAX_DELAY); //vbus conversion is slower, probably replace with polling IB if vbus is ever removed
+
 	/* Handle phase order swapping so that voltage/current/torque match encoder direction */
 	if(!PHASE_ORDER){
 		controller->adc_a_raw = HAL_ADC_GetValue(&ADC_CH_IA);
@@ -60,10 +69,6 @@ void analog_sample (ControllerStruct *controller){
 		//adc_ch_ic = ADC_CH_IB;
 	}
 
-
-	HAL_ADC_Start(&ADC_CH_MAIN);
-	HAL_ADC_PollForConversion(&ADC_CH_MAIN, HAL_MAX_DELAY);
-
 	controller->adc_vbus_raw = HAL_ADC_GetValue(&ADC_CH_VBUS);
 	controller->v_bus = (float)controller->adc_vbus_raw*V_SCALE;
 
@@ -71,6 +76,7 @@ void analog_sample (ControllerStruct *controller){
     controller->i_b = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
     controller->i_c = -controller->i_a - controller->i_b;
 
+    printf("sampleEnd\n\r");
 
 }
 
