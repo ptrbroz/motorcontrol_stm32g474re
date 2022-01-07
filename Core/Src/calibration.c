@@ -51,6 +51,7 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
         //commutate(controller, &cal->cal_position);
     	cal->theta_start = encoder->angle_multiturn[0];
 
+    	//debug manual rotation
     	controller->dtc_u = 0.5 + A*sin_lut(2*3.14*(f*cal->time));
     	controller->dtc_v = 0.5 + A*sin_lut(2*3.14*(f*cal->time)+6.28/3.0);
     	controller->dtc_w = 0.5 + A*sin_lut(2*3.14*(f*cal->time)+2*6.28/3.0);
