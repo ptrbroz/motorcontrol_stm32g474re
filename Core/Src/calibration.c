@@ -30,16 +30,16 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 	cal->time = (float)(loop_count - cal->start_count)*DT;
 
 
-	/*
-	if(debugCounter%10000==0){
+
+	if(debugCounter%1000==0){
 		printf("DC %u k, time = %f\n\r", debugCounter/1000, cal->time);
 		printf("%f %f %f \r\n", controller->i_a, controller->i_b, controller->i_c);
 	}
-	*/
+
 
 	debugCounter++;
 
-	int debug_sine = 0;
+	int debug_sine = 1;
 	if(debug_sine){
 		//blindly rotate motor instead of callibration
 		float A = 0.04;
