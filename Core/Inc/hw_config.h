@@ -47,8 +47,12 @@
 //input U on adcs a, b = 1.73 1.65
 //raw measurements from adcs - 2058, 1955
 //voltage on shunt resistors - 0
+//measurements 19.01.2022
+//u a, b 1.628 1.663
+//raw 2000 1960
 //#define V_SCALE_ORIG 		0.012890625f    // Bus volts per A/D Count
 #define V_SCALE				16*0.012890625f // Bus volts per A/D Count
+#define V_SCALE_SHUNTS      0.000879f		// Shunt volts per A/D count
 #define DTC_MAX 			0.94f          	// Max duty cycle
 #define DTC_MIN 			0.0f          	// Min duty cycle
 #define DTC_COMP 			0.000f          // deadtime compensation (100 ns / 25 us)

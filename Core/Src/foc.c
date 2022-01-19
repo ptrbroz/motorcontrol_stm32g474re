@@ -283,9 +283,9 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
        limit_norm(&controller->v_d, &controller->v_q, controller->v_max);
 
        abc(controller->theta_elec + 1.5f*DT*controller->dtheta_elec, controller->v_d, controller->v_q, &controller->v_u, &controller->v_v, &controller->v_w); //inverse dq0 transform on voltages
-       //orig svm(controller->v_max, controller->v_u, controller->v_v, controller->v_w, &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
+       svm(controller->v_max, controller->v_u, controller->v_v, controller->v_w, &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
 
-       svm(controller->v_max, 0*(controller->v_u), 0*(controller->v_v), 0*(controller->v_w), &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
+       //DEBUG zeros svm(controller->v_max, 0*(controller->v_u), 0*(controller->v_v), 0*(controller->v_w), &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
 
        set_dtc(controller);
 

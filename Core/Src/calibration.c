@@ -29,40 +29,38 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 	}
 	cal->time = (float)(loop_count - cal->start_count)*DT;
 
-	float A = 0.04;
-	float f = 10;
 
+	/*
 	if(debugCounter%10000==0){
 		printf("DC %u k, time = %f\n\r", debugCounter/1000, cal->time);
 		printf("%f %f %f \r\n", controller->i_a, controller->i_b, controller->i_c);
 	}
+	*/
 
 	debugCounter++;
 
-    //if(cal->time < T1){
-	if(cal->time < 15.0){
-        // Set voltage angle to zero, wait for rotor position to settle
+	int debug_sine = 0;
+	if(debug_sine){
+		//blindly rotate motor instead of callibration
+		float A = 0.04;
+		float f = 10;
+		controller->i_d_des = 0.0f;
+		controller->i_q_des = 0.0f;
+		controller->dtc_u = 0.5 + A*sin_lut(2*3.14*(f*cal->time));
+		controller->dtc_v = 0.5 + A*sin_lut(2*3.14*(f*cal->time)+6.28/3.0);
+		controller->dtc_w = 0.5 + A*sin_lut(2*3.14*(f*cal->time)+2*6.28/3.0);
+		set_dtc(controller);
+		return;
+	}
+    if(cal->time < T1){
+	    // Set voltage angle to zero, wait for rotor position to settle
         cal->theta_ref = 0;//W_CAL*cal->time;
         cal->cal_position.elec_angle = cal->theta_ref;
         cal->cal_position.elec_velocity = 0;
-        //controller->i_d_des = I_CAL; Ben
-        controller->i_d_des = 0.0f;
+        controller->i_d_des = I_CAL;
         controller->i_q_des = 0.0f;
-        //commutate(controller, &cal->cal_position);
+        commutate(controller, &cal->cal_position);
     	cal->theta_start = encoder->angle_multiturn[0];
-
-    	//debug manual rotation
-    	controller->dtc_u = 0.5 + A*sin_lut(2*3.14*(f*cal->time));
-    	controller->dtc_v = 0.5 + A*sin_lut(2*3.14*(f*cal->time)+6.28/3.0);
-    	controller->dtc_w = 0.5 + A*sin_lut(2*3.14*(f*cal->time)+2*6.28/3.0);
-
-
-
-    	//svm(controller->v_max, A*sin_lut(2*3.14*(f*cal->time)), A*sin_lut(2*3.14*(f*cal->time)+6.28/3.0), A*sin_lut(2*3.14*(f*cal->time)+2*6.28/3.0), &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
-
-    	set_dtc(controller);
-
-
     	return;
     }
     else if(cal->time < T1+2.0f*PI_F/W_CAL){

@@ -262,7 +262,7 @@ void USART2_IRQHandler(void)
 void FDCAN2_IT0_IRQHandler(void)
 {
   /* USER CODE BEGIN FDCAN2_IT0_IRQn 0 */
-
+  printf("CAN\n\r");
   /* USER CODE END FDCAN2_IT0_IRQn 0 */
   HAL_FDCAN_IRQHandler(&hfdcan2);
   /* USER CODE BEGIN FDCAN2_IT0_IRQn 1 */
