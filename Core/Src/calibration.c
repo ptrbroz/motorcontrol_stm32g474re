@@ -39,7 +39,7 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 
 	debugCounter++;
 
-	int debug_sine = 1;
+	int debug_sine = 0;
 	if(debug_sine){
 		//blindly rotate motor instead of callibration
 		float A = 0.04;

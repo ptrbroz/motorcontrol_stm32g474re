@@ -219,14 +219,12 @@ void SysTick_Handler(void)
 void TIM1_UP_TIM16_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_UP_TIM16_IRQn 0 */
+  HAL_GPIO_WritePin(LED1, 1);
+
   analog_sample(&controller);
 
   /* Sample position sensor */
   ps_sample(&comm_encoder, DT);
-
-  static int ledVal = 1;
-  ledVal = !ledVal;
-  HAL_GPIO_WritePin(LED1, ledVal );
 
   /* Run Finite State Machine */
   run_fsm(&state);
@@ -237,7 +235,7 @@ void TIM1_UP_TIM16_IRQHandler(void)
   /* USER CODE END TIM1_UP_TIM16_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_TIM16_IRQn 1 */
-
+  HAL_GPIO_WritePin(LED1, 0);
   /* USER CODE END TIM1_UP_TIM16_IRQn 1 */
 }
 
@@ -262,7 +260,7 @@ void USART2_IRQHandler(void)
 void FDCAN2_IT0_IRQHandler(void)
 {
   /* USER CODE BEGIN FDCAN2_IT0_IRQn 0 */
-  printf("CAN\n\r");
+
   /* USER CODE END FDCAN2_IT0_IRQn 0 */
   HAL_FDCAN_IRQHandler(&hfdcan2);
   /* USER CODE BEGIN FDCAN2_IT0_IRQn 1 */
@@ -270,6 +268,7 @@ void FDCAN2_IT0_IRQHandler(void)
   uint32_t TxMailbox;
   //pack_reply(&can_tx, CAN_ID,  comm_encoder.angle_multiturn[0]/GR, comm_encoder.velocity/GR, controller.i_q_filt*KT*GR);	// Pack response
 
+  printf("CAN tx disabled!!\n\r");
   //HAL_FDCAN_AddTxMessage(&CAN_H, &can_tx.tx_header, can_tx.data, &TxMailbox);	// Send response - from Ben's fw
   //TODO send again
   //HAL_FDCAN_AddMessageToTxFifoQ(&CAN_H, &can_tx.tx_header, can_tx.data); //replacement for above line
