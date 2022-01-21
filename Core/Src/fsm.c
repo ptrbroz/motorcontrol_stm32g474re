@@ -112,7 +112,7 @@
 			case MOTOR_MODE:
 
 				//printf("Entering Motor Mode\r\n");
-				HAL_GPIO_WritePin(LED1, GPIO_PIN_SET );
+				HAL_GPIO_WritePin(LED2, GPIO_PIN_SET );
 				reset_foc(&controller);
 				drv_enable_gd(drv);
 				break;
@@ -155,7 +155,7 @@
 					drv_disable_gd(drv);
 					reset_foc(&controller);
 					//printf("Leaving Motor Mode\r\n");
-					HAL_GPIO_WritePin(LED1, GPIO_PIN_RESET );
+					HAL_GPIO_WritePin(LED2, GPIO_PIN_RESET );
 				}
 				zero_commands(&controller);		// Set commands to zero
 				break;
@@ -214,6 +214,30 @@
 					load_from_flash();
 					printf("\n\r  Saved new zero position:  %.4f\n\r\n\r", M_ZERO);
 					break;
+				case FRESET_CMD:
+					E_ZERO = 0;
+				    M_ZERO = 0;
+				    I_BW = 1000;
+				    I_MAX=40;
+				    I_FW_MAX=0;
+				    CAN_ID = 1;
+				    CAN_MASTER = 0;
+				    CAN_TIMEOUT = 1000;
+				    R_NOMINAL = 0.0f;
+				    TEMP_MAX = 125.0f;
+				    I_CAL = 5.0f;
+				    PPAIRS = 21.0f;
+				    GR = 1.0f;
+				    KT = 1.0f;
+				    KP_MAX = 500.0f;
+				    KD_MAX = 5.0f;
+				    P_MAX = 12.5f;
+				    P_MIN = -12.5f;
+				    V_MAX = 65.0f;
+				    V_MIN = -65.0f;
+				    save_to_flash();
+				    load_from_flash();
+				    printf("\n\r  FLASH variables reset. \n\r Please cycle power. \n\r\n\r");
 				}
 			break;
 		case SETUP_MODE:
@@ -251,6 +275,7 @@
 	    printf(" s - Setup\n\r");
 	    printf(" e - Display Encoder\n\r");
 	    printf(" z - Set Zero Position\n\r");
+	    printf(" f - Factory reset flash vars\n\r");
 	    printf(" esc - Exit to Menu\n\r");
 
 	    //gpio.led->write(0);

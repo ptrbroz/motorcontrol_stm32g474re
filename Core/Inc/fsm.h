@@ -29,6 +29,7 @@ extern "C" {
 #define ENCODER_CMD			'e'
 #define SETUP_CMD			's'
 #define ZERO_CMD			'z'
+#define FRESET_CMD          'f'
 #define ENTER_CMD			13
 
 

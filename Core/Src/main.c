@@ -180,6 +180,7 @@ int main(void)
   if(isnan(V_MAX)){V_MAX = 65.0f;}
   if(isnan(V_MIN)){V_MIN = -65.0f;}
 
+
   printf("\r\nFirmware Version Number: %.2f\r\n", VERSION_NUM);
 
   /* Controller Setup */
@@ -311,6 +312,7 @@ int main(void)
   {
 	  HAL_Delay(150);
 	  drv_print_faults(drv);
+	  //printf("ppairs %f \n\r", PPAIRS);
 	  //printf("vbus %f \n\r",controller.v_bus);
 	  //printf("Ria,b %d %d \n\r", controller.adc_a_raw, controller.adc_b_raw);
 	  //printf("ia,b %f %f | %d %d \n\r", controller.i_a, controller.i_b, controller.adc_a_raw-controller.adc_a_offset, controller.adc_b_raw-controller.adc_b_offset);
