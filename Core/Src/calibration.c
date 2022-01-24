@@ -29,7 +29,7 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 	}
 	cal->time = (float)(loop_count - cal->start_count)*DT;
 
-	int debug_sine = 1;
+	int debug_sine = 0;
 	if(debug_sine){
 
 		#define sampleCount 200

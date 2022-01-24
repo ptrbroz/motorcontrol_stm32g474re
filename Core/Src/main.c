@@ -224,7 +224,8 @@ int main(void)
 
 
   // TODO REMOVE - turning off / on driver for debug purposes.
-  if(0){
+  #define DRV_DISABLED 0
+  if(DRV_DISABLED){
   HAL_GPIO_WritePin(ENABLE_PIN, GPIO_PIN_RESET);
   printf("BEWARE, debug mode with driver disabled!!");
   }
@@ -311,7 +312,8 @@ int main(void)
   while (1)
   {
 	  HAL_Delay(150);
-	  drv_print_faults(drv);
+
+	  if(! DRV_DISABLED ) drv_print_faults(drv);
 
 	  //controller.dtc_u = 0.3;
 	  //set_dtc(&controller);

@@ -35,15 +35,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  15 .debug_ranges 00001ba8  00000000  00000000  00067c90  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  0002da21  00000000  00000000  00069838  2**0
+ 16 .debug_macro  0002da28  00000000  00000000  00069838  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0002435e  00000000  00000000  00097259  2**0
+ 17 .debug_line   00024362  00000000  00000000  00097260  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    0011b1dd  00000000  00000000  000bb5b7  2**0
+ 18 .debug_str    0011b1ed  00000000  00000000  000bb5c2  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  001d6794  2**0
+ 19 .comment      00000053  00000000  00000000  001d67af  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00009488  00000000  00000000  001d67e8  2**2
+ 20 .debug_frame  00009488  00000000  00000000  001d6804  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -2050,8 +2050,8 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
  8001488:	687b      	ldr	r3, [r7, #4]
  800148a:	edc3 7a05 	vstr	s15, [r3, #20]
 
-	int debug_sine = 1;
- 800148e:	2301      	movs	r3, #1
+	int debug_sine = 0;
+ 800148e:	2300      	movs	r3, #0
  8001490:	623b      	str	r3, [r7, #32]
 	if(debug_sine){
  8001492:	6a3b      	ldr	r3, [r7, #32]
@@ -2320,7 +2320,7 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
  80016dc:	4010bf25 	.word	0x4010bf25
  80016e0:	20009bbc 	.word	0x20009bbc
  80016e4:	08012128 	.word	0x08012128
- 80016e8:	3851b717 	.word	0x3851b717
+ 80016e8:	37f34507 	.word	0x37f34507
  80016ec:	20000228 	.word	0x20000228
  80016f0:	51eb851f 	.word	0x51eb851f
  80016f4:	2000022c 	.word	0x2000022c
@@ -2832,10 +2832,10 @@ void calibrate_encoder(EncoderStruct *encoder, ControllerStruct *controller, Cal
 		return;
  8001b5e:	e16a      	b.n	8001e36 <calibrate_encoder+0x566>
  8001b60:	080121bc 	.word	0x080121bc
- 8001b64:	3851b717 	.word	0x3851b717
+ 8001b64:	37f34507 	.word	0x37f34507
  8001b68:	2000130c 	.word	0x2000130c
  8001b6c:	40c90fdb 	.word	0x40c90fdb
- 8001b70:	3a03126e 	.word	0x3a03126e
+ 8001b70:	39980b24 	.word	0x39980b24
  8001b74:	080121e4 	.word	0x080121e4
  8001b78:	3ba0d97c 	.word	0x3ba0d97c
  8001b7c:	43000000 	.word	0x43000000
@@ -5357,7 +5357,7 @@ void init_controller_params(ControllerStruct *controller){
  8003030:	3d3851ec 	.word	0x3d3851ec
  8003034:	2000130c 	.word	0x2000130c
  8003038:	38d1b717 	.word	0x38d1b717
- 800303c:	3851b717 	.word	0x3851b717
+ 800303c:	37f34507 	.word	0x37f34507
  8003040:	40c90fdb 	.word	0x40c90fdb
  8003044:	3dcccccd 	.word	0x3dcccccd
  8003048:	20009bbc 	.word	0x20009bbc
@@ -5884,7 +5884,7 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
  80035c4:	3f933333 	.word	0x3f933333
  80035c8:	3f70a3d7 	.word	0x3f70a3d7
  80035cc:	3f13cd3a 	.word	0x3f13cd3a
- 80035d0:	389d4951 	.word	0x389d4951
+ 80035d0:	383673c5 	.word	0x383673c5
  80035d4:	edd3 7a0d 	vldr	s15, [r3, #52]	; 0x34
  80035d8:	ed5f 6a03 	vldr	s13, [pc, #-12]	; 80035d0 <commutate+0x3a0>
  80035dc:	ee67 7aa6 	vmul.f32	s15, s15, s13
@@ -6805,7 +6805,7 @@ void zero_commands(ControllerStruct * controller){
  8003c8e:	bf00      	nop
  8003c90:	08012370 	.word	0x08012370
  8003c94:	20001068 	.word	0x20001068
- 8003c98:	3851b717 	.word	0x3851b717
+ 8003c98:	37f34507 	.word	0x37f34507
  8003c9c:	20009bbc 	.word	0x20009bbc
  8003ca0:	0801238c 	.word	0x0801238c
  8003ca4:	2000130c 	.word	0x2000130c
@@ -8575,7 +8575,8 @@ int main(void)
 	  HAL_Delay(150);
  8004c14:	2096      	movs	r0, #150	; 0x96
  8004c16:	f001 f9cb 	bl	8005fb0 <HAL_Delay>
-	  drv_print_faults(drv);
+
+	  if(! DRV_DISABLED ) drv_print_faults(drv);
  8004c1a:	4b0c      	ldr	r3, [pc, #48]	; (8004c4c <main+0x59c>)
  8004c1c:	681a      	ldr	r2, [r3, #0]
  8004c1e:	2100      	movs	r1, #0
@@ -10111,17 +10112,17 @@ void TIM1_UP_TIM16_IRQHandler(void)
  80056d0:	4a07      	ldr	r2, [pc, #28]	; (80056f0 <TIM1_UP_TIM16_IRQHandler+0x4c>)
  80056d2:	f8c2 30b0 	str.w	r3, [r2, #176]	; 0xb0
 
-  HAL_GPIO_WritePin(LED1, 0);
- 80056d6:	2200      	movs	r2, #0
- 80056d8:	2104      	movs	r1, #4
- 80056da:	4804      	ldr	r0, [pc, #16]	; (80056ec <TIM1_UP_TIM16_IRQHandler+0x48>)
- 80056dc:	f003 fb3a 	bl	8008d54 <HAL_GPIO_WritePin>
+
   /* USER CODE END TIM1_UP_TIM16_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
- 80056e0:	4807      	ldr	r0, [pc, #28]	; (8005700 <TIM1_UP_TIM16_IRQHandler+0x5c>)
- 80056e2:	f005 f9e5 	bl	800aab0 <HAL_TIM_IRQHandler>
+ 80056d6:	480a      	ldr	r0, [pc, #40]	; (8005700 <TIM1_UP_TIM16_IRQHandler+0x5c>)
+ 80056d8:	f005 f9ea 	bl	800aab0 <HAL_TIM_IRQHandler>
   /* USER CODE BEGIN TIM1_UP_TIM16_IRQn 1 */
-
+  HAL_GPIO_WritePin(LED1, 0);
+ 80056dc:	2200      	movs	r2, #0
+ 80056de:	2104      	movs	r1, #4
+ 80056e0:	4802      	ldr	r0, [pc, #8]	; (80056ec <TIM1_UP_TIM16_IRQHandler+0x48>)
+ 80056e2:	f003 fb37 	bl	8008d54 <HAL_GPIO_WritePin>
   /* USER CODE END TIM1_UP_TIM16_IRQn 1 */
 }
  80056e6:	bf00      	nop
@@ -10129,7 +10130,7 @@ void TIM1_UP_TIM16_IRQHandler(void)
  80056ea:	bf00      	nop
  80056ec:	48000800 	.word	0x48000800
  80056f0:	2000140c 	.word	0x2000140c
- 80056f4:	3851b717 	.word	0x3851b717
+ 80056f4:	37f34507 	.word	0x37f34507
  80056f8:	20001068 	.word	0x20001068
  80056fc:	200012fc 	.word	0x200012fc
  8005700:	2000a130 	.word	0x2000a130
@@ -10807,13 +10808,13 @@ void MX_TIM1_Init(void)
  8005b02:	4b50      	ldr	r3, [pc, #320]	; (8005c44 <MX_TIM1_Init+0x188>)
  8005b04:	2200      	movs	r2, #0
  8005b06:	605a      	str	r2, [r3, #4]
-  htim1.Init.CounterMode = TIM_COUNTERMODE_CENTERALIGNED3;
+  htim1.Init.CounterMode = TIM_COUNTERMODE_CENTERALIGNED1;
  8005b08:	4b4e      	ldr	r3, [pc, #312]	; (8005c44 <MX_TIM1_Init+0x188>)
- 8005b0a:	2260      	movs	r2, #96	; 0x60
+ 8005b0a:	2220      	movs	r2, #32
  8005b0c:	609a      	str	r2, [r3, #8]
-  htim1.Init.Period = 8501;
+  htim1.Init.Period = 4930;
  8005b0e:	4b4d      	ldr	r3, [pc, #308]	; (8005c44 <MX_TIM1_Init+0x188>)
- 8005b10:	f242 1235 	movw	r2, #8501	; 0x2135
+ 8005b10:	f241 3242 	movw	r2, #4930	; 0x1342
  8005b14:	60da      	str	r2, [r3, #12]
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
  8005b16:	4b4b      	ldr	r3, [pc, #300]	; (8005c44 <MX_TIM1_Init+0x188>)
@@ -10889,14 +10890,14 @@ void MX_TIM1_Init(void)
   sConfigOC.Pulse = 0;
  8005b8a:	2300      	movs	r3, #0
  8005b8c:	63fb      	str	r3, [r7, #60]	; 0x3c
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
- 8005b8e:	2302      	movs	r3, #2
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+ 8005b8e:	2300      	movs	r3, #0
  8005b90:	643b      	str	r3, [r7, #64]	; 0x40
   sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
  8005b92:	2300      	movs	r3, #0
  8005b94:	647b      	str	r3, [r7, #68]	; 0x44
-  sConfigOC.OCFastMode = TIM_OCFAST_ENABLE;
- 8005b96:	2304      	movs	r3, #4
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+ 8005b96:	2300      	movs	r3, #0
  8005b98:	64bb      	str	r3, [r7, #72]	; 0x48
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
  8005b9a:	2300      	movs	r3, #0

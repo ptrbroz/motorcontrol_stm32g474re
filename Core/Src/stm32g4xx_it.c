@@ -232,11 +232,11 @@ void TIM1_UP_TIM16_IRQHandler(void)
   /* increment loop count */
   controller.loop_count++;
 
-  HAL_GPIO_WritePin(LED1, 0);
+
   /* USER CODE END TIM1_UP_TIM16_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_TIM16_IRQn 1 */
-
+  HAL_GPIO_WritePin(LED1, 0);
   /* USER CODE END TIM1_UP_TIM16_IRQn 1 */
 }
 
