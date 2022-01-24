@@ -6632,8 +6632,8 @@ void zero_commands(ControllerStruct * controller){
  8003b8a:	ed9f 0a43 	vldr	s0, [pc, #268]	; 8003c98 <update_fsm+0x20c>
  8003b8e:	4841      	ldr	r0, [pc, #260]	; (8003c94 <update_fsm+0x208>)
  8003b90:	f001 fa90 	bl	80050b4 <ps_sample>
-					HAL_Delay(20);
- 8003b94:	2014      	movs	r0, #20
+					HAL_Delay(1);
+ 8003b94:	2001      	movs	r0, #1
  8003b96:	f002 fa0b 	bl	8005fb0 <HAL_Delay>
 					M_ZERO = comm_encoder.count;
  8003b9a:	4b3e      	ldr	r3, [pc, #248]	; (8003c94 <update_fsm+0x208>)
@@ -10812,9 +10812,9 @@ void MX_TIM1_Init(void)
  8005b08:	4b4e      	ldr	r3, [pc, #312]	; (8005c44 <MX_TIM1_Init+0x188>)
  8005b0a:	2220      	movs	r2, #32
  8005b0c:	609a      	str	r2, [r3, #8]
-  htim1.Init.Period = 4930;
+  htim1.Init.Period = 4700;
  8005b0e:	4b4d      	ldr	r3, [pc, #308]	; (8005c44 <MX_TIM1_Init+0x188>)
- 8005b10:	f241 3242 	movw	r2, #4930	; 0x1342
+ 8005b10:	f241 225c 	movw	r2, #4700	; 0x125c
  8005b14:	60da      	str	r2, [r3, #12]
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
  8005b16:	4b4b      	ldr	r3, [pc, #300]	; (8005c44 <MX_TIM1_Init+0x188>)
@@ -11043,9 +11043,9 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
  8005c74:	68fb      	ldr	r3, [r7, #12]
 
     /* TIM1 interrupt Init */
-    HAL_NVIC_SetPriority(TIM1_UP_TIM16_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(TIM1_UP_TIM16_IRQn, 1, 0);
  8005c76:	2200      	movs	r2, #0
- 8005c78:	2100      	movs	r1, #0
+ 8005c78:	2101      	movs	r1, #1
  8005c7a:	2019      	movs	r0, #25
  8005c7c:	f001 fd25 	bl	80076ca <HAL_NVIC_SetPriority>
     HAL_NVIC_EnableIRQ(TIM1_UP_TIM16_IRQn);
