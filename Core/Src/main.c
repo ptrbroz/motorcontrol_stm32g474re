@@ -312,6 +312,12 @@ int main(void)
   {
 	  HAL_Delay(150);
 	  drv_print_faults(drv);
+
+	  //controller.dtc_u = 0.3;
+	  //set_dtc(&controller);
+	  //printf("%f %f \n\r", controller.i_a, controller.i_b);
+
+
 	  //printf("ppairs %f \n\r", PPAIRS);
 	  //printf("vbus %f \n\r",controller.v_bus);
 	  //printf("Ria,b %d %d \n\r", controller.adc_a_raw, controller.adc_b_raw);

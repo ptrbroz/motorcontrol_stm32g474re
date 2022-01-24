@@ -49,12 +49,12 @@ void set_dtc(ControllerStruct *controller){
 void analog_sample (ControllerStruct *controller){
 	/* Sample ADCs */
 
-
+	/*
 	HAL_ADC_Start(&ADC_CH_IA);
 	HAL_ADC_Start(&ADC_CH_IB);
 	HAL_ADC_PollForConversion(&ADC_CH_IA, HAL_MAX_DELAY);
 	HAL_ADC_PollForConversion(&ADC_CH_IB, HAL_MAX_DELAY);
-
+	*/
 
 	//don't do Vbus
 	//HAL_ADC_Start(&ADC_CH_MAIN);
@@ -80,6 +80,8 @@ void analog_sample (ControllerStruct *controller){
     controller->i_b = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
     controller->i_c = -controller->i_a - controller->i_b;
 
+    HAL_ADC_Start(&ADC_CH_IA);
+    HAL_ADC_Start(&ADC_CH_IB);
 
 }
 
@@ -307,7 +309,7 @@ void torque_control(ControllerStruct *controller){
 
 
 void zero_commands(ControllerStruct * controller){
-	printf("ZERO COMMANDS!!");
+	//printf("ZERO COMMANDS!!");
 	controller->t_ff = 0;
 	controller->kp = 0;
 	controller->kd = 0;

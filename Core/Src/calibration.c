@@ -29,18 +29,47 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 	}
 	cal->time = (float)(loop_count - cal->start_count)*DT;
 
-
-
-	if(debugCounter%1000==0){
-		printf("DC %u k, time = %f\n\r", debugCounter/1000, cal->time);
-		printf("%f %f %f \r\n", controller->i_a, controller->i_b, controller->i_c);
-	}
-
-
-	debugCounter++;
-
-	int debug_sine = 0;
+	int debug_sine = 1;
 	if(debug_sine){
+
+		#define sampleCount 200
+		#define sampleRate 100
+		static float valsA[sampleCount];
+		static float valsB[sampleCount];
+		static float valsC[sampleCount];
+		static float times[sampleCount];
+
+
+		if(debugCounter%sampleRate==0){
+			//printf("DC %u k, time = %f\n\r", debugCounter/1000, cal->time);
+			//printf("%f %f %f \r\n", controller->i_a, controller->i_b, controller->i_c);
+			//printf("%f %f \r\n", cal->time, controller->i_a);
+			int k = debugCounter/sampleRate;
+			//printf("%d\n\r",k);
+			if(k<sampleCount){
+			valsA[k] = controller->i_a;
+			valsB[k] = controller->i_b;
+			valsC[k] = controller->i_c;
+			times[k] = cal->time;
+			}
+			else{
+				static int printed = 0;
+				if(printed){
+
+				}
+				else{
+					printed = 1;
+					for(int i=0;i<sampleCount;i++){
+						printf("%f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i]);
+					}
+
+				}
+			}
+		}
+
+
+		debugCounter++;
+
 		//blindly rotate motor instead of callibration
 		float A = 0.04;
 		float f = 10;
@@ -51,7 +80,9 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 		controller->dtc_w = 0.5 + A*sin_lut(2*3.14*(f*cal->time)+2*6.28/3.0);
 		set_dtc(controller);
 		return;
-	}
+
+		}
+
     if(cal->time < T1){
 	    // Set voltage angle to zero, wait for rotor position to settle
         cal->theta_ref = 0;//W_CAL*cal->time;
