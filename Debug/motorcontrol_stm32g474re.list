@@ -3959,9 +3959,9 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
  800241a:	f006 fb19 	bl	8008a50 <HAL_GPIO_Init>
 
     /* FDCAN2 interrupt Init */
-    HAL_NVIC_SetPriority(FDCAN2_IT0_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(FDCAN2_IT0_IRQn, 1, 0);
  800241e:	2200      	movs	r2, #0
- 8002420:	2100      	movs	r1, #0
+ 8002420:	2101      	movs	r1, #1
  8002422:	2056      	movs	r0, #86	; 0x56
  8002424:	f005 f951 	bl	80076ca <HAL_NVIC_SetPriority>
     HAL_NVIC_EnableIRQ(FDCAN2_IT0_IRQn);
@@ -6632,8 +6632,8 @@ void zero_commands(ControllerStruct * controller){
  8003b8a:	ed9f 0a43 	vldr	s0, [pc, #268]	; 8003c98 <update_fsm+0x20c>
  8003b8e:	4841      	ldr	r0, [pc, #260]	; (8003c94 <update_fsm+0x208>)
  8003b90:	f001 fa90 	bl	80050b4 <ps_sample>
-					HAL_Delay(1);
- 8003b94:	2001      	movs	r0, #1
+					HAL_Delay(20);
+ 8003b94:	2014      	movs	r0, #20
  8003b96:	f002 fa0b 	bl	8005fb0 <HAL_Delay>
 					M_ZERO = comm_encoder.count;
  8003b9a:	4b3e      	ldr	r3, [pc, #248]	; (8003c94 <update_fsm+0x208>)
@@ -11328,9 +11328,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
  8005e10:	f002 fe1e 	bl	8008a50 <HAL_GPIO_Init>
 
     /* USART2 interrupt Init */
-    HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(USART2_IRQn, 1, 0);
  8005e14:	2200      	movs	r2, #0
- 8005e16:	2100      	movs	r1, #0
+ 8005e16:	2101      	movs	r1, #1
  8005e18:	2026      	movs	r0, #38	; 0x26
  8005e1a:	f001 fc56 	bl	80076ca <HAL_NVIC_SetPriority>
     HAL_NVIC_EnableIRQ(USART2_IRQn);

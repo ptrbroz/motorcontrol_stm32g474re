@@ -203,7 +203,7 @@
 					printf("Zero pos command entry\n\r");
 					comm_encoder.m_zero = 0;
 					ps_sample(&comm_encoder, DT);
-					HAL_Delay(1);
+					HAL_Delay(20);
 					M_ZERO = comm_encoder.count;
 					//if (!prefs.ready()) prefs.open();
 					//    prefs.flush();                                                  // Write new prefs to flash
