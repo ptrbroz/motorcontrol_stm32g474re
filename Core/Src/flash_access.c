@@ -21,6 +21,8 @@ Maybe replace with EEPROM emulation or implement wear-leveling in the future. (1
 #define BANK1_START 0x08000000
 #define RESERVED_PAGE  123      //max prog. upload reduced by 10k in platformio.ini, reserving pages 123 to 127 of bank 2
 #define RESERVED_ADDR BANK2_START + PAGELEN*RESERVED_PAGE
+#define RESERVED_AREA_LEN 5 	//number of reserved pages
+
 
 #define FLOATSCOUNT 64
 #define INTSCOUNT 256
@@ -73,7 +75,7 @@ int erase_reserved_flash(){
     eraseStruct.TypeErase = FLASH_TYPEERASE_PAGES;
     eraseStruct.Banks = FLASH_BANK_2;
     eraseStruct.Page = RESERVED_PAGE;
-    eraseStruct.NbPages = 5;
+    eraseStruct.NbPages = RESERVED_AREA_LEN;
     uint32_t error;
     HAL_FLASHEx_Erase(&eraseStruct, &error);
     printf("Leaving erase flash.");

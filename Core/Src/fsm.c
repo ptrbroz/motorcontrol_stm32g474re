@@ -212,7 +212,7 @@
 					//spi.SetMechOffset(M_OFFSET);
 					save_to_flash();
 					load_from_flash();
-					printf("\n\r  Saved new zero position:  %.4f\n\r\n\r", M_ZERO);
+					printf("\n\r  Saved new zero position:  %.4d \n\r\n\r", M_ZERO);
 					break;
 				case FRESET_CMD:
 					E_ZERO = 0;
@@ -235,9 +235,60 @@
 				    P_MIN = -12.5f;
 				    V_MAX = 65.0f;
 				    V_MIN = -65.0f;
+				    //zero encoder LUT
+				    int *lut = &ENCODER_LUT;
+				    for(int i = 0; i < 128; i++){
+				    	lut[i] = 0;
+				    }
 				    save_to_flash();
 				    load_from_flash();
 				    printf("\n\r  FLASH variables reset. \n\r Please cycle power. \n\r\n\r");
+				    break;
+				case FDUMP_CMD:
+					printf("Variable dump:\n\r");
+
+					printf("---Enc. LUT:---\n\r");
+					int *encLut = &ENCODER_LUT;
+					for(int i = 0; i < 128;){
+						printf("%d ", encLut[i]);
+						i++;
+						if(i%8==0){
+							printf("\n\r");
+						}
+					}
+
+					printf("---Int regs:---\n\r");
+					printf("PHASE_ORDER %d \n\r", PHASE_ORDER);
+					printf("CAN_ID %d \n\r", CAN_ID);
+					printf("CAN_MASTER %d \n\r", CAN_MASTER);
+					printf("CAN_TIMEOUT %d \n\r", CAN_TIMEOUT);
+					printf("M_ZERO %d \n\r", M_ZERO);
+					printf("E_ZERO %d \n\r", E_ZERO);
+
+					printf("--Float regs:--\n\r");
+					printf("I_BW %f \n\r", I_BW);
+					printf("I_MAX %f \n\r", I_MAX);
+					printf("THETA_MIN %f \n\r", THETA_MIN);
+					printf("THETA_MAX %f \n\r", THETA_MAX);
+					printf("I_FW_MAX %f \n\r", I_FW_MAX);
+					printf("R_NOMINAL %f \n\r", R_NOMINAL);
+					printf("TEMP_MAX %f \n\r", TEMP_MAX);
+					printf("I_MAX_CONT %f \n\r", I_MAX_CONT);
+					printf("PPAIRS %f \n\r", PPAIRS);
+					printf("R_PHASE %f \n\r", R_PHASE);
+					printf("KT %f \n\r", KT);
+					printf("C_TH %f \n\r", C_TH);
+					printf("GR %f \n\r", GR);
+					printf("I_CAL %f \n\r", I_CAL);
+					printf("P_MIN %f \n\r", P_MIN);
+					printf("P_MAX %f \n\r", P_MAX);
+					printf("V_MIN %f \n\r", V_MIN);
+					printf("V_MAX %f \n\r", V_MAX);
+					printf("KP_MAX %f \n\r", KP_MAX);
+					printf("KD_MAX %f \n\r", KD_MAX);
+
+					printf("----------------\n\r");
+					break;
 				}
 			break;
 		case SETUP_MODE:
@@ -276,6 +327,7 @@
 	    printf(" e - Display Encoder\n\r");
 	    printf(" z - Set Zero Position\n\r");
 	    printf(" f - Factory reset flash vars\n\r");
+	    printf(" d - Variable dump\n\r");
 	    printf(" esc - Exit to Menu\n\r");
 
 	    //gpio.led->write(0);

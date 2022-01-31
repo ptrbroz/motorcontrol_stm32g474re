@@ -191,6 +191,8 @@ int main(void)
 
   }
 
+  printf("erase %d ", erase_reserved_flash());
+
   init_controller_params(&controller);
 
   /* calibration "encoder" zeroing */
