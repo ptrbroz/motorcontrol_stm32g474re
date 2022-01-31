@@ -67,7 +67,8 @@
 
 		 case MOTOR_MODE:
 			 /* If CAN has timed out, reset all commands */
-			 if((CAN_TIMEOUT > 0 ) && (controller.timeout > CAN_TIMEOUT)){
+			 #define just_stay_alive_forever_please 1 //todo remove this
+			 if((!just_stay_alive_forever_please) && (CAN_TIMEOUT > 0 ) && (controller.timeout > CAN_TIMEOUT)){
 				 zero_commands(&controller);
 			 }
 			 /* Otherwise, commutate */

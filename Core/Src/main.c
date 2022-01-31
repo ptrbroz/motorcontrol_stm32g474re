@@ -191,8 +191,6 @@ int main(void)
 
   }
 
-  printf("erase %d ", erase_reserved_flash());
-
   init_controller_params(&controller);
 
   /* calibration "encoder" zeroing */
@@ -313,7 +311,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_Delay(150);
+	  HAL_Delay(100);
 
 	  if(! DRV_DISABLED ) drv_print_faults(drv);
 
@@ -323,14 +321,14 @@ int main(void)
 
 
 	  //printf("ppairs %f \n\r", PPAIRS);
-	  //printf("vbus %f \n\r",controller.v_bus);
+	  //printf("vbus %f \n\r",controller.v_bus);`
 	  //printf("Ria,b %d %d \n\r", controller.adc_a_raw, controller.adc_b_raw);
 	  //printf("ia,b %f %f | %d %d \n\r", controller.i_a, controller.i_b, controller.adc_a_raw-controller.adc_a_offset, controller.adc_b_raw-controller.adc_b_offset);
 	  //pack_reply(&can_tx, CAN_ID,  0.0, 0.0, 0.0);	// Pack response
 	  //HAL_FDCAN_AddMessageToTxFifoQ(&CAN_H, &can_tx.tx_header, can_tx.data); //replacement for above line
 	  //printf("sent\n");
 	  if(state.state==MOTOR_MODE){
-	  //	  printf("%.2f %.2f %.2f %.2f %.2f\r\n", controller.i_a, controller.i_b, controller.i_d, controller.i_q, controller.dtheta_elec);
+	  	  printf("%.2f %.2f %.2f %.2f %.2f %.2f\r\n", controller.i_a, controller.i_b, controller.i_d, controller.i_q, controller.dtheta_elec, controller.dtheta_mech);
 	  }
     /* USER CODE END WHILE */
 

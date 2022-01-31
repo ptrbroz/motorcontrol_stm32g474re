@@ -46,7 +46,6 @@ void ps_sample(EncoderStruct * encoder, float dt){
 	int off_interp = off_1 + ((off_2 - off_1)*(encoder->raw - ((encoder->raw>>9)<<9))>>9);     // Interpolate between lookup table entries
 	encoder->count = encoder->raw + off_interp;
 
-
 	/* Real angles in radians */
 	encoder->angle_singleturn = ((float)(encoder->count-M_ZERO))/((float)ENC_CPR);
 	int int_angle = encoder->angle_singleturn;
