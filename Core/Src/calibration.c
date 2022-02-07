@@ -34,12 +34,21 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 	cal->time = (float)(loop_count - cal->start_count)*DT;
 
 	int debug_sine = 0;
-	if(debug_sine){
-		#define sampleCount 200
-		#define sampleRate 100
+	int data_capture = 1;
+
+	if(data_capture){
+		#define sampleCount 300
+		#define sampleRate 1
+		#define freeRun 50000
 		static float valsA[sampleCount];
 		static float valsB[sampleCount];
 		static float valsC[sampleCount];
+		static float valsD[sampleCount];
+		static float valsE[sampleCount];
+		static float valsF[sampleCount];
+		static float valsG[sampleCount];
+		static float valsH[sampleCount];
+		static float valsI[sampleCount];
 		static float times[sampleCount];
 		if(debugCounter%sampleRate==0){
 			//printf("DC %u k, time = %f\n\r", debugCounter/1000, cal->time);
@@ -50,7 +59,13 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 			if(k<sampleCount){
 			valsA[k] = controller->i_a;
 			valsB[k] = controller->i_b;
-			valsC[k] = controller->i_c;
+			valsC[k] = controller->i_d;
+			valsD[k] = controller->i_q;
+			valsE[k] = controller->d_int;
+			valsF[k] = controller->q_int;
+			valsG[k] = controller->dtc_u;
+			valsH[k] = controller->dtc_v;
+			valsI[k] = controller->dtc_w;
 			times[k] = cal->time;
 			}
 			else{
@@ -59,14 +74,21 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 
 				}
 				else{
-					printed = 1;
-					for(int i=0;i<sampleCount;i++){
-						printf("%f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i]);
+					if(k>sampleCount+freeRun){
+						printed = 1;
+						printf("DATACAP\r\n");
+						for(int i=0;i<sampleCount;i++){
+							//printf("%f %f %f %f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsD[i], valsE[i], valsF[i]);
+							printf("%f %f %f %f %f %f %f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsD[i], valsE[i], valsF[i], valsG[i], valsH[i], valsI[i]);
+						}
 					}
 				}
 			}
 		}
 		debugCounter++;
+	}
+
+	if(debug_sine){
 		//blindly rotate motor instead of callibration
 		float A = 0.04;
 		float f = 10;
@@ -79,6 +101,7 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 		return;
 		//debug sine end
 		}
+
 
     if(cal->time < T1){
     	if(pf1){

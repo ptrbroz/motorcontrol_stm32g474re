@@ -248,8 +248,8 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
 
 		controller->theta_elec = encoder->elec_angle;
 		controller->dtheta_elec = encoder->elec_velocity;
-		controller->dtheta_mech = encoder->velocity*GR;
-		controller->theta_mech = encoder->angle_multiturn[0]/GR;
+		controller->dtheta_mech = encoder->velocity;//*GR;
+		controller->theta_mech = encoder->angle_multiturn[0];///GR;
 
        /// Commutation  ///
        dq0(controller->theta_elec, controller->i_a, controller->i_b, controller->i_c, &controller->i_d, &controller->i_q);    //dq0 transform on currents - 3.8 us
@@ -273,7 +273,6 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
        float v_q_ff = 0.0f;//controller->dtheta_elec*L_D*controller->i_d;
 
        controller->v_d = controller->k_d*i_d_error + controller->d_int + v_d_ff;
-
        controller->v_d = fast_fmaxf(fast_fminf(controller->v_d, controller->v_max), -controller->v_max);
 
        controller->d_int += controller->k_d*controller->ki_d*i_d_error;
@@ -289,9 +288,11 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
        limit_norm(&controller->v_d, &controller->v_q, controller->v_max);
 
        abc(controller->theta_elec + 1.5f*DT*controller->dtheta_elec, controller->v_d, controller->v_q, &controller->v_u, &controller->v_v, &controller->v_w); //inverse dq0 transform on voltages
+
        svm(controller->v_max, controller->v_u, controller->v_v, controller->v_w, &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
 
-       //DEBUG zeros svm(controller->v_max, 0*(controller->v_u), 0*(controller->v_v), 0*(controller->v_w), &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
+       //DEBUG zeros
+       //svm(controller->v_max, 0*(controller->v_u), 0*(controller->v_v), 0*(controller->v_w), &controller->dtc_u, &controller->dtc_v, &controller->dtc_w); //space vector modulation
 
        set_dtc(controller);
 

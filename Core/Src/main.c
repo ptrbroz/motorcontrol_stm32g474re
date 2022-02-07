@@ -225,9 +225,13 @@ int main(void)
 
   // TODO REMOVE - turning off / on driver for debug purposes.
   #define DRV_DISABLED 0
+  #define DRV_NOPRINT 1
   if(DRV_DISABLED){
   HAL_GPIO_WritePin(ENABLE_PIN, GPIO_PIN_RESET);
-  printf("BEWARE, debug mode with driver disabled!!");
+  printf("BEWARE, debug mode with driver disabled!!\n\r");
+  }
+  if(DRV_NOPRINT){
+	  printf("BEWARE, debug mode with driver error printing disabled!!\n\r");
   }
 
 
@@ -313,7 +317,8 @@ int main(void)
   {
 	  HAL_Delay(100);
 
-	  if(! DRV_DISABLED ) drv_print_faults(drv);
+	  if(! (DRV_DISABLED||DRV_NOPRINT) ) drv_print_faults(drv);
+
 
 	  //controller.dtc_u = 0.3;
 	  //set_dtc(&controller);
@@ -328,7 +333,7 @@ int main(void)
 	  //HAL_FDCAN_AddMessageToTxFifoQ(&CAN_H, &can_tx.tx_header, can_tx.data); //replacement for above line
 	  //printf("sent\n");
 	  if(state.state==MOTOR_MODE){
-	  	  printf("%.2f %.2f %.2f %.2f %.2f %.2f\r\n", controller.i_a, controller.i_b, controller.i_d, controller.i_q, controller.dtheta_elec, controller.dtheta_mech);
+	  	  //printf("%.2f %.2f %.2f %.2f %.2f %.2f\r\n", controller.i_a, controller.i_b, controller.i_d, controller.i_q, controller.dtheta_elec, controller.dtheta_mech);
 	  }
     /* USER CODE END WHILE */
 

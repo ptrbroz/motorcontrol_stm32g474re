@@ -57,7 +57,7 @@
 #define DTC_MIN 			0.0f          	// Min duty cycle
 #define DTC_COMP 			0.000f          // deadtime compensation (100 ns / 25 us)
 // original #define DT					.000025f		// Loop period
-#define DT					.000060f		// Loop period
+#define DT					.000030f		// Loop period
 #define EN_ENC_LINEARIZATION 1				// Enable/disable encoder linearization
 
 
@@ -67,7 +67,7 @@
 //#define K_D .05f //orig                   // Loop gain,  Volts/Amp
 //#define K_Q .05f //orig                   // Loop gain,  Volts/Amp
 #define K_D .05f
-#define K_Q .05fc
+#define K_Q .05f
 #define K_SCALE 0.0001f             // K_loop/Loop BW (Hz) 0.0042
 //#define KI_D 0.045f //orig               // PI zero, in radians per sample
 //#define KI_Q 0.045f //orig               // PI zero, in radians per sample
