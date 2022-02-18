@@ -231,7 +231,7 @@ int main(void)
   printf("BEWARE, debug mode with driver disabled!!\n\r");
   }
   if(DRV_NOPRINT){
-	  printf("BEWARE, debug mode with driver error printing disabled!!\n\r");
+	  printf("BEWARE, debug mode with driver error printing disabled!\n\r");
   }
 
 
@@ -320,9 +320,10 @@ int main(void)
 	  if(! (DRV_DISABLED||DRV_NOPRINT) ) drv_print_faults(drv);
 
 
+
 	  //controller.dtc_u = 0.3;
 	  //set_dtc(&controller);
-	  //printf("%f %f \n\r", controller.i_a, controller.i_b);
+	  //printf("%f %f %f \n\r", controller.i_a, controller.i_b, controller.i_c);
 
 
 	  //printf("ppairs %f \n\r", PPAIRS);

@@ -33,13 +33,14 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 	}
 	cal->time = (float)(loop_count - cal->start_count)*DT;
 
-	int debug_sine = 0;
+	int debug_sine = 0;			//blind motor rotation instead of callibration
 	int data_capture = 1;
+	int overwrite_forever = 1; //keeps saving data forever, debug to check if loop freq. changes when saving
 
 	if(data_capture){
 		#define sampleCount 300
 		#define sampleRate 1
-		#define freeRun 50000
+		#define freeRun 0
 		static float valsA[sampleCount];
 		static float valsB[sampleCount];
 		static float valsC[sampleCount];
@@ -55,6 +56,13 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 			//printf("%f %f %f \r\n", controller->i_a, controller->i_b, controller->i_c);
 			//printf("%f %f \r\n", cal->time, controller->i_a);
 			int k = debugCounter/sampleRate;
+
+			if(overwrite_forever){
+				if(k>sampleCount){
+					k = 0;
+				}
+			}
+
 			//printf("%d\n\r",k);
 			if(k<sampleCount){
 			valsA[k] = controller->i_a;
@@ -109,7 +117,9 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
     		pf1 = 0;
     	}
 	    // Set voltage angle to zero, wait for rotor position to settle
-        cal->theta_ref = 0;//W_CAL*cal->time;
+
+
+    	cal->theta_ref = 0;//W_CAL*cal->time;
         cal->cal_position.elec_angle = cal->theta_ref;
         cal->cal_position.elec_velocity = 0;
         controller->i_d_des = I_CAL;
