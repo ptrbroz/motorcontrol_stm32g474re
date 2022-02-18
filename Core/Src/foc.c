@@ -72,6 +72,9 @@ void analog_sample (ControllerStruct *controller){
 		//adc_ch_ic = ADC_CH_IB;
 	}
 
+	HAL_ADC_Stop(&ADC_CH_IA);
+	HAL_ADC_Stop(&ADC_CH_IB);
+
 	//HAL_ADC_Start(&ADC_CH_MAIN);
 	//HAL_ADC_PollForConversion(&ADC_CH_MAIN, HAL_MAX_DELAY);
 
