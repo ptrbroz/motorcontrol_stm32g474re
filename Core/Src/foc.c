@@ -72,16 +72,13 @@ void analog_sample (ControllerStruct *controller){
 		//adc_ch_ic = ADC_CH_IB;
 	}
 
-	//controller->adc_vbus_raw = HAL_ADC_GetValue(&ADC_CH_VBUS);
-	//controller->v_bus = (float)controller->adc_vbus_raw*V_SCALE;
-	controller->v_bus = 24.0;
+	HAL_ADC_Start(&ADC_CH_MAIN);
+	HAL_ADC_PollForConversion(&ADC_CH_MAIN, HAL_MAX_DELAY);
 
+	controller->v_bus = 24.0;
     controller->i_a = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);    // Calculate phase currents from ADC readings
     controller->i_b = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
     controller->i_c = -controller->i_a - controller->i_b;
-
-    HAL_ADC_Start(&ADC_CH_IA);
-    HAL_ADC_Start(&ADC_CH_IB);
 
 }
 
