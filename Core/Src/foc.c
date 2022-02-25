@@ -55,16 +55,21 @@ void filter_currents(float newA, float newB, float *filtA, float *filtB){
 	}
 	aHist[2] = newA;
 	bHist[2] = newB;
+
+	//a,b filtered separately to avoid error on 2nd channel when 1st one crosses 0
 	if(fabs(aHist[1]) > fabs(aHist[0])){
-		//target sample furthest from 0, don't interpolate
 		*filtA = aHist[1];
-		*filtB = bHist[1];
 	}
 	else{
-		//interp.
 		*filtA = (aHist[0]+aHist[2])/2.0;
-		*filtB = (bHist[0]+bHist[2])/2.0;
 	}
+
+	if(fabs(bHist[1]) > fabs(bHist[0])){
+			*filtB = bHist[1];
+		}
+		else{
+			*filtB = (bHist[0]+bHist[2])/2.0;
+		}
 }
 
 void analog_sample (ControllerStruct *controller){
