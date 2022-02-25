@@ -46,9 +46,29 @@ void set_dtc(ControllerStruct *controller){
 	}
 }
 
+void filter_currents(float newA, float newB, float *filtA, float *filtB){
+	static float aHist[3] = {0.0, 0.0, 0.0};
+	static float bHist[3] = {0.0, 0.0, 0.0};
+	for(int i = 0; i<2; i++){
+		aHist[i] = aHist[i+1];
+		bHist[i] = bHist[i+1];
+	}
+	aHist[2] = newA;
+	bHist[2] = newB;
+	if(fabs(aHist[1]) > fabs(aHist[0])){
+		//target sample furthest from 0, don't interpolate
+		*filtA = aHist[1];
+		*filtB = bHist[1];
+	}
+	else{
+		//interp.
+		*filtA = (aHist[0]+aHist[2])/2.0;
+		*filtB = (bHist[0]+bHist[2])/2.0;
+	}
+}
+
 void analog_sample (ControllerStruct *controller){
 	/* Sample ADCs */
-
 
 	HAL_ADC_Start(&ADC_CH_IA);
 	HAL_ADC_Start(&ADC_CH_IB);
@@ -72,17 +92,19 @@ void analog_sample (ControllerStruct *controller){
 		//adc_ch_ic = ADC_CH_IB;
 	}
 
-	HAL_ADC_Stop(&ADC_CH_IA);
-	HAL_ADC_Stop(&ADC_CH_IB);
+	//HAL_ADC_Stop(&ADC_CH_IA);
+	//HAL_ADC_Stop(&ADC_CH_IB);
 
 	//HAL_ADC_Start(&ADC_CH_MAIN);
 	//HAL_ADC_PollForConversion(&ADC_CH_MAIN, HAL_MAX_DELAY);
 
-	controller->v_bus = 24.0;
-    controller->i_a = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);    // Calculate phase currents from ADC readings
-    controller->i_b = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
-    controller->i_c = -controller->i_a - controller->i_b;
+	float unfiltered_i_a = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);    // Calculate phase currents from ADC readings
+	float unfiltered_i_b = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
 
+	filter_currents(unfiltered_i_a, unfiltered_i_b, &controller->i_a, &controller->i_b);
+
+    controller->i_c = -controller->i_a - controller->i_b;
+    controller->v_bus = 24.0;
 }
 
 void abc( float theta, float d, float q, float *a, float *b, float *c){
