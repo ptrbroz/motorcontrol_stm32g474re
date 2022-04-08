@@ -14,6 +14,9 @@
 #include "usart.h"
 #include "math_ops.h"
 
+#include "structs.h"
+#include "drv8353.h"
+
 void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruct * cal, int loop_count){
 	/* Checks phase order, to ensure that positive Q current produces
 	   torque in the positive direction wrt the position sensor */
@@ -33,14 +36,16 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 	}
 	cal->time = (float)(loop_count - cal->start_count)*DT;
 
-	int debug_sine = 1;			//blind motor rotation instead of callibration
+	int debug_sine = 0;			//blind motor rotation instead of callibration
 	int data_capture = 1;
 	int overwrite_forever = 0; //keeps saving data forever, debug to check if loop freq. changes when saving
+	int disable_on_print = 1;
+	int supress_print = 0;
 
 	if(data_capture){
-		#define sampleCount 2000
+		#define sampleCount 500
 		#define sampleRate 1
-		#define freeRun 5000
+		#define freeRun 0
 		static float valsA[sampleCount];
 		static float valsB[sampleCount];
 		static float valsC[sampleCount];
@@ -67,13 +72,13 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 			if(k<sampleCount){
 			valsA[k] = controller->i_a;
 			valsB[k] = controller->i_b;
-			valsC[k] = controller->i_d;
-			valsD[k] = controller->i_q;
+			valsC[k] = controller->i_a_un;
+			valsD[k] = controller->i_b_un;
 			valsE[k] = controller->d_int;
 			valsF[k] = controller->q_int;
-			valsG[k] = controller->dtc_u;
-			valsH[k] = controller->dtc_v;
-			valsI[k] = controller->dtc_w;
+			valsG[k] = controller->adc_vbus_raw;
+			valsH[k] = controller->v_bus;
+			valsI[k] = 0.0;//controller->dtc_w;
 			times[k] = cal->time;
 			}
 			else{
@@ -84,11 +89,19 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 				else{
 					if(k>sampleCount+freeRun){
 						printed = 1;
-						printf("DATACAP\r\n");
-						for(int i=0;i<sampleCount;i++){
-							//printf("%f %f %f %f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsD[i], valsE[i], valsF[i]);
-							printf("%f %f %f %f %f %f %f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsD[i], valsE[i], valsF[i], valsG[i], valsH[i], valsI[i]);
-							//printf("%f %f %f %f 0 0 0 %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsG[i], valsH[i], valsI[i]);
+						if(disable_on_print){
+							drv_disable_gd(drv);
+						}
+						if(supress_print){
+							printf("\n\n\rPrint supressed.\n\r");
+						}
+						else{
+							printf("DATACAP\r\n");
+							for(int i=0;i<sampleCount;i++){
+								//printf("%f %f %f %f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsD[i], valsE[i], valsF[i]);
+								printf("%f %f %f %f %f %f %f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsD[i], valsE[i], valsF[i], valsG[i], valsH[i], valsI[i]);
+								//printf("%f %f %f %f 0 0 0 %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsG[i], valsH[i], valsI[i]);
+							}
 						}
 					}
 				}
@@ -131,6 +144,7 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
     	return;
     }
     else if(cal->time < T1+2.0f*PI_F/W_CAL){
+    	drv_disable_gd(drv); //TODO remove
     	if(pf2){
     	    printf("p2\n\r");
     	    pf2 = 0;

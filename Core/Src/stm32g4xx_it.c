@@ -68,6 +68,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern ADC_HandleTypeDef hadc3;
 extern FDCAN_HandleTypeDef hfdcan2;
 extern TIM_HandleTypeDef htim1;
 extern UART_HandleTypeDef huart2;
@@ -253,6 +254,21 @@ void USART2_IRQHandler(void)
   char c = Serial2RxBuffer[0];
   update_fsm(&state, c);
   /* USER CODE END USART2_IRQn 1 */
+}
+
+/**
+  * @brief This function handles ADC3 global interrupt.
+  */
+void ADC3_IRQHandler(void)
+{
+  /* USER CODE BEGIN ADC3_IRQn 0 */
+
+  /* USER CODE END ADC3_IRQn 0 */
+  HAL_ADC_IRQHandler(&hadc3);
+  /* USER CODE BEGIN ADC3_IRQn 1 */
+  controller.adc_vbus_raw = HAL_ADC_GetValue(&ADC_CH_VBUS);
+  HAL_ADC_Start_IT(&ADC_CH_VBUS);
+  /* USER CODE END ADC3_IRQn 1 */
 }
 
 /**

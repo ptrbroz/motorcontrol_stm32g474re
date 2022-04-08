@@ -16,6 +16,7 @@ typedef struct{
 	uint32_t tim_ch_w;								// Terminal W timer channel
     int adc_a_raw, adc_b_raw, adc_c_raw, adc_vbus_raw;      // Raw ADC Values
     float i_a, i_b, i_c;                                    // Phase currents
+    float i_a_un, i_b_un, i_c_un;							// Debug - unfiltered phase currents
     float v_bus, v_bus_filt;                                // DC link voltage
     float theta_mech, theta_elec;                           // Rotor mechanical and electrical angle
     float dtheta_mech, dtheta_elec, dtheta_elec_filt;       // Rotor mechanical and electrical angular velocit

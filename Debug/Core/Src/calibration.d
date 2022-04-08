@@ -37,7 +37,10 @@ Core/Src/calibration.o: ../Core/Src/calibration.c \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
  ../Core/Inc/foc.h ../Core/Inc/hw_config.h ../Core/Inc/user_config.h \
- ../Core/Inc/usart.h ../Core/Inc/math_ops.h
+ ../Core/Inc/usart.h ../Core/Inc/math_ops.h ../Core/Inc/structs.h \
+ ../Core/Inc/drv8353.h ../Core/Inc/gpio.h ../Core/Inc/adc.h \
+ ../Core/Inc/tim.h ../Core/Inc/fsm.h ../Core/Inc/calibration.h \
+ ../Core/Inc/fdcan.h
 
 ../Core/Inc/calibration.h:
 
@@ -126,3 +129,19 @@ Core/Src/calibration.o: ../Core/Src/calibration.c \
 ../Core/Inc/usart.h:
 
 ../Core/Inc/math_ops.h:
+
+../Core/Inc/structs.h:
+
+../Core/Inc/drv8353.h:
+
+../Core/Inc/gpio.h:
+
+../Core/Inc/adc.h:
+
+../Core/Inc/tim.h:
+
+../Core/Inc/fsm.h:
+
+../Core/Inc/calibration.h:
+
+../Core/Inc/fdcan.h:

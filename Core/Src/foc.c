@@ -103,13 +103,17 @@ void analog_sample (ControllerStruct *controller){
 	//HAL_ADC_Start(&ADC_CH_MAIN);
 	//HAL_ADC_PollForConversion(&ADC_CH_MAIN, HAL_MAX_DELAY);
 
-	float unfiltered_i_a = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);    // Calculate phase currents from ADC readings
-	float unfiltered_i_b = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
 
-	filter_currents(unfiltered_i_a, unfiltered_i_b, &controller->i_a, &controller->i_b);
+	controller->i_a_un = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);    // Calculate phase currents from ADC readings
+	controller->i_b_un = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
+
+	filter_currents(controller->i_a_un, controller->i_b_un, &controller->i_a, &controller->i_b);
 
     controller->i_c = -controller->i_a - controller->i_b;
-    controller->v_bus = 24.0;
+    controller->i_c_un = -controller->i_a_un - controller->i_b_un;
+
+    //vbus raw reading moved to interrupt
+    controller->v_bus = controlleradc_vbus_raw*V_SCALE;
 }
 
 void abc( float theta, float d, float q, float *a, float *b, float *c){

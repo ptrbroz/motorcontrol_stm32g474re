@@ -2,4 +2,4 @@ adc.c:32:6:MX_ADC1_Init	64	static
 adc.c:92:6:MX_ADC2_Init	48	static
 adc.c:144:6:MX_ADC3_Init	64	static
 adc.c:206:6:HAL_ADC_MspInit	64	static
-adc.c:281:6:HAL_ADC_MspDeInit	0	static
+adc.c:284:6:HAL_ADC_MspDeInit	8	static

@@ -51,7 +51,7 @@
 //u a, b 1.628 1.663
 //raw 2000 1960
 //#define V_SCALE_ORIG 		0.012890625f    // Bus volts per A/D Count
-#define V_SCALE				16*0.012890625f // Bus volts per A/D Count
+#define V_SCALE				16.0*0.0515625f // Bus volts per A/D Count
 #define V_SCALE_SHUNTS      0.000879f		// Shunt volts per A/D count
 #define DTC_MAX 			0.94f          	// Max duty cycle
 #define DTC_MIN 			0.0f          	// Min duty cycle

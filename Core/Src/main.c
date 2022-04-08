@@ -225,14 +225,14 @@ int main(void)
 
   // TODO REMOVE - turning off / on driver for debug purposes.
   #define DRV_DISABLED 0
-  #define DRV_NOPRINT 1
+  #define DRV_NOPRINT 0
   if(DRV_DISABLED){
-  HAL_GPIO_WritePin(ENABLE_PIN, GPIO_PIN_RESET);
-  printf("BEWARE, debug mode with driver disabled!!\n\r");
-  }
+	  HAL_GPIO_WritePin(ENABLE_PIN, GPIO_PIN_RESET);
+	  printf("BEWARE, debug mode with driver disabled!!\n\r");
+  	  }
   if(DRV_NOPRINT){
 	  printf("BEWARE, debug mode with driver error printing disabled!\n\r");
-  }
+  	  }
 
 
   /*
@@ -304,6 +304,8 @@ int main(void)
   HAL_UART_Receive_IT(&huart2, (uint8_t *)Serial2RxBuffer, 1);
   HAL_TIM_Base_Start_IT(&htim1);
 
+  HAL_ADC_Start_IT(&ADC_CH_VBUS);
+
 
   HAL_GPIO_WritePin(LED1, 0 );
   HAL_GPIO_WritePin(LED2, 0 );
@@ -327,7 +329,7 @@ int main(void)
 
 
 	  //printf("ppairs %f \n\r", PPAIRS);
-	  //printf("vbus %f \n\r",controller.v_bus);`
+	  //printf("vbus %f \n\r",controller.v_bus);
 	  //printf("Ria,b %d %d \n\r", controller.adc_a_raw, controller.adc_b_raw);
 	  //printf("ia,b %f %f | %d %d \n\r", controller.i_a, controller.i_b, controller.adc_a_raw-controller.adc_a_offset, controller.adc_b_raw-controller.adc_b_offset);
 	  //pack_reply(&can_tx, CAN_ID,  0.0, 0.0, 0.0);	// Pack response
