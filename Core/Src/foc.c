@@ -113,7 +113,7 @@ void analog_sample (ControllerStruct *controller){
     controller->i_c_un = -controller->i_a_un - controller->i_b_un;
 
     //vbus raw reading moved to interrupt
-    controller->v_bus = controlleradc_vbus_raw*V_SCALE;
+    controller->v_bus = controller->adc_vbus_raw*V_SCALE;
 }
 
 void abc( float theta, float d, float q, float *a, float *b, float *c){
@@ -279,7 +279,7 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
 
 		controller->theta_elec = encoder->elec_angle;
 		controller->dtheta_elec = encoder->elec_velocity;
-		controller->dtheta_mech = encoder->velocity*GR;
+		controller->dtheta_mech = encoder->velocity/GR;    //ben bugfix change * to /
 		controller->theta_mech = encoder->angle_multiturn[0]/GR;
 
        /// Commutation  ///

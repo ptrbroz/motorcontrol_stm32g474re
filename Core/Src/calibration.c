@@ -37,10 +37,10 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 	cal->time = (float)(loop_count - cal->start_count)*DT;
 
 	int debug_sine = 0;			//blind motor rotation instead of callibration
-	int data_capture = 1;
+	int data_capture = 0;
 	int overwrite_forever = 0; //keeps saving data forever, debug to check if loop freq. changes when saving
-	int disable_on_print = 1;
-	int supress_print = 0;
+	int disable_on_print = 0;
+	int supress_print = 1;
 
 	if(data_capture){
 		#define sampleCount 500
