@@ -12,5 +12,5 @@ foc.c:223:6:update_observer	0	static
 foc.c:255:7:linearize_dtc	8	static
 foc.c:264:6:field_weaken	16	static
 foc.c:276:6:commutate	48	static
-foc.c:333:6:torque_control	0	static
-foc.c:343:6:zero_commands	0	static
+foc.c:338:6:torque_control	0	static
+foc.c:348:6:zero_commands	0	static

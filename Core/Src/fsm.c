@@ -19,6 +19,97 @@
 #include "position_sensor.h"
 #include "flash_access.h"
 
+void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
+
+		static int debugCounter = 0;
+
+		int data_capture = 1;
+		int overwrite_forever = 0; //keeps saving data forever, debug to check if loop freq. changes when saving
+		int disable_on_print = 1;
+		int supress_print = 0;
+
+		if(data_capture){
+			#define sampleCount 300
+			#define sampleRate 5
+			#define freeRun 0
+			static float valsA[sampleCount];
+			static float valsB[sampleCount];
+			static float valsC[sampleCount];
+			static float valsD[sampleCount];
+			static float valsE[sampleCount];
+			static float valsF[sampleCount];
+			static float valsG[sampleCount];
+			static float valsH[sampleCount];
+			static float valsI[sampleCount];
+			static float times[sampleCount];
+			const char la[] = "ia";
+			const char lb[] = "ib";
+			const char lc[] = "ic";
+			const char ld[] = "id";
+			const char le[] = "iq";
+			const char lf[] = "theta_elec";
+			const char lg[] = "theta_mech";
+			const char lh[] = "vbus";
+			const char li[] = "0";
+			if(debugCounter%sampleRate==0){
+				//printf("DC %u k, time = %f\n\r", debugCounter/1000, cal->time);
+				//printf("%f %f %f \r\n", controller->i_a, controller->i_b, controller->i_c);
+				//printf("%f %f \r\n", cal->time, controller->i_a);
+				int k = debugCounter/sampleRate;
+
+				if(overwrite_forever){
+					if(k>sampleCount){
+						k = 0;
+					}
+				}
+
+				//printf("%d\n\r",k);
+				if(k<sampleCount){
+				valsA[k] = controller->i_a;
+				valsB[k] = controller->i_b;
+				valsC[k] = controller->i_c;
+				valsD[k] = controller->i_d_filt;
+				valsE[k] = controller->i_q_filt;
+				valsF[k] = controller->theta_elec;
+				valsG[k] = controller->theta_mech;
+				valsH[k] = controller->v_bus;
+				valsI[k] = 0.0;//controller->dtc_w;
+				times[k] = debugCounter*DT;
+				}
+				else{
+					static int printed = 0;
+					if(printed){
+
+					}
+					else{
+						if(k>sampleCount+freeRun){
+							printed = 1;
+							if(disable_on_print){
+								drv_disable_gd(drv);
+							}
+							if(supress_print){
+								printf("\n\n\rPrint supressed.\n\r");
+							}
+							else{
+								printf("DATACAP\r\n");
+								printf("t %s %s %s %s %s %s %s %s %s \r\n", la, lb, lc, ld, le, lf, lg, lh, li);
+								for(int i=0;i<sampleCount;i++){
+									//printf("%f %f %f %f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsD[i], valsE[i], valsF[i]);
+									printf("%f %f %f %f %f %f %f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsD[i], valsE[i], valsF[i], valsG[i], valsH[i], valsI[i]);
+									//printf("%f %f %f %f 0 0 0 %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsG[i], valsH[i], valsI[i]);
+								}
+							}
+						}
+					}
+				}
+			}
+			debugCounter++;
+		}
+
+
+}
+
+
  void run_fsm(FSMStruct * fsmstate){
 	 /* run_fsm is run every commutation interrupt cycle */
 
@@ -76,6 +167,7 @@
 				 torque_control(&controller);
 				 field_weaken(&controller);
 				 commutate(&controller, &comm_encoder);
+				 debug_data_capture(&comm_encoder, &controller);
 			 }
 			 controller.timeout ++;
 			 break;
@@ -152,11 +244,11 @@
 			case MOTOR_MODE:
 				/* Don't stop commutating if there are high currents or FW happening */
 				//if( (fabs(controller.i_q_filt)<1.0f) && (fabs(controller.i_d_filt)<1.0f) ){ ben bugfix comment out
-					fsmstate->ready = 1;
-					drv_disable_gd(drv);
-					reset_foc(&controller);
-					//printf("Leaving Motor Mode\r\n");
-					HAL_GPIO_WritePin(LED2, GPIO_PIN_RESET );
+				fsmstate->ready = 1;
+				drv_disable_gd(drv);
+				reset_foc(&controller);
+				//printf("Leaving Motor Mode\r\n");
+				HAL_GPIO_WritePin(LED2, GPIO_PIN_RESET );
 				//} //ben bugfix comment out
 				zero_commands(&controller);		// Set commands to zero
 				break;

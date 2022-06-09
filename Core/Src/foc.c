@@ -279,7 +279,7 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
 
 		controller->theta_elec = encoder->elec_angle;
 		controller->dtheta_elec = encoder->elec_velocity;
-		controller->dtheta_mech = encoder->velocity/GR;    //ben bugfix change * to /
+		controller->dtheta_mech = encoder->velocity*GR;    //ben bugfix change * to /
 		controller->theta_mech = encoder->angle_multiturn[0]/GR;
 
        /// Commutation  ///
@@ -317,6 +317,11 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
        controller->v_q = fast_fmaxf(fast_fminf(controller->v_q, vq_max), -vq_max);
 
        limit_norm(&controller->v_d, &controller->v_q, controller->v_max);
+
+       //debug according to Ben: apply small positive voltage on q-axis, motor should spin in positive direction
+       controller->v_q = 1.0;
+       controller->v_d = 0.0;
+
 
        abc(controller->theta_elec + 1.5f*DT*controller->dtheta_elec, controller->v_d, controller->v_q, &controller->v_u, &controller->v_v, &controller->v_w); //inverse dq0 transform on voltages
 
