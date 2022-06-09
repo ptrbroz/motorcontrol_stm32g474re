@@ -23,7 +23,7 @@ void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 
 		static int debugCounter = 0;
 
-		int data_capture = 1;
+		int data_capture = 0;
 		int overwrite_forever = 0; //keeps saving data forever, debug to check if loop freq. changes when saving
 		int disable_on_print = 1;
 		int supress_print = 0;
@@ -221,6 +221,7 @@ void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 				drv_enable_gd(drv);
 				break;
 
+
 		}
  }
 
@@ -333,6 +334,12 @@ void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 				    load_from_flash();
 				    printf("\n\r  FLASH variables reset. \n\r Please cycle power. \n\r\n\r");
 				    break;
+				case ORDER_CMD:
+					PHASE_ORDER = !PHASE_ORDER;
+					save_to_flash();
+					load_from_flash();
+					printf("Phase order is now %d. Please cycle power.\n\r", PHASE_ORDER);
+					break;
 				case FDUMP_CMD:
 					printf("Variable dump:\n\r");
 
@@ -392,10 +399,8 @@ void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 			}
 			fsmstate->bytecount++;
 			/* If enter is typed, process user input */
-
 			break;
-
-		case ENCODER_MODE:
+				case ENCODER_MODE:
 			break;
 		case MOTOR_MODE:
 			break;
@@ -417,6 +422,7 @@ void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 	    printf(" z - Set Zero Position\n\r");
 	    printf(" f - Factory reset flash vars\n\r");
 	    printf(" d - Variable dump\n\r");
+	    printf(" o - Swap phase order\n\r");
 	    printf(" esc - Exit to Menu\n\r");
 
 	    //gpio.led->write(0);
