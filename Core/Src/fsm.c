@@ -23,7 +23,7 @@ void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 
 		static int debugCounter = 0;
 
-		int data_capture = 0;
+		int data_capture = 1;
 		int overwrite_forever = 0; //keeps saving data forever, debug to check if loop freq. changes when saving
 		int disable_on_print = 1;
 		int supress_print = 0;

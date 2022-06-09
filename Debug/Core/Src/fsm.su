@@ -1,4 +1,4 @@
-fsm.c:22:6:debug_data_capture	0	static
+fsm.c:22:6:debug_data_capture	192	static
 fsm.c:228:7:fsm_exit_state	8	static
 fsm.c:412:7:enter_menu_state	8	static
 fsm.c:431:7:enter_setup_state	56	static

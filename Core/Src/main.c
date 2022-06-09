@@ -211,17 +211,26 @@ int main(void)
   HAL_ADC_Start(&hadc2);
   HAL_ADC_Start(&hadc3);
 
-  /* DRV8323 setup */
+  /* DRV8353 setup */
   HAL_GPIO_WritePin(DRV_CS, GPIO_PIN_SET ); 	// CS high
   HAL_GPIO_WritePin(ENABLE_PIN, GPIO_PIN_SET );
   HAL_Delay(1);
   //drv_calibrate(drv);
-
-
-
   HAL_Delay(1);
   drv_write_DCR(drv, 0x0, DIS_GDF_EN, 0x0, PWM_MODE_3X, 0x0, 0x0, 0x0, 0x0, 0x1);
-
+  HAL_Delay(1);
+  drv_write_CSACR(drv, 0x0, 0x1, 0x0, CSA_GAIN_40, 0x0, 0x1, 0x1, 0x1, SEN_LVL_1_0);
+  HAL_Delay(1);
+  zero_current(&controller);
+  HAL_Delay(1);
+  drv_write_CSACR(drv, 0x0, 0x1, 0x0, CSA_GAIN_40, 0x1, 0x0, 0x0, 0x0, SEN_LVL_1_0);
+  HAL_Delay(1);
+  drv_write_OCPCR(drv, TRETRY_50US, DEADTIME_50NS, OCP_DEG_8US, OCP_DEG_8US, VDS_LVL_1_50);
+  HAL_Delay(1);
+  drv_disable_gd(drv);
+  HAL_Delay(1);
+  //drv_enable_gd(drv);   */
+  printf("ADC A OFFSET: %d     ADC B OFFSET: %d\r\n", controller.adc_a_offset, controller.adc_b_offset);
 
   // TODO REMOVE - turning off / on driver for debug purposes.
   #define DRV_DISABLED 0
@@ -248,19 +257,7 @@ int main(void)
   }
   */
 
-  HAL_Delay(1);
-  drv_write_CSACR(drv, 0x0, 0x1, 0x0, CSA_GAIN_40, 0x0, 0x1, 0x1, 0x1, SEN_LVL_1_0);
-  HAL_Delay(1);
-  zero_current(&controller);
-  HAL_Delay(1);
-  drv_write_CSACR(drv, 0x0, 0x1, 0x0, CSA_GAIN_40, 0x1, 0x0, 0x0, 0x0, SEN_LVL_1_0);
-  HAL_Delay(1);
-  drv_write_OCPCR(drv, TRETRY_50US, DEADTIME_50NS, OCP_DEG_8US, OCP_DEG_8US, VDS_LVL_1_50);
-  HAL_Delay(1);
-  drv_disable_gd(drv);
-  HAL_Delay(1);
-  //drv_enable_gd(drv);   */
-  printf("ADC A OFFSET: %d     ADC B OFFSET: %d\r\n", controller.adc_a_offset, controller.adc_b_offset);
+
 
 
   HAL_GPIO_WritePin(LED1, 1 );

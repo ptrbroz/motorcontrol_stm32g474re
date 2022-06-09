@@ -107,10 +107,12 @@ void analog_sample (ControllerStruct *controller){
 	controller->i_a_un = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);    // Calculate phase currents from ADC readings
 	controller->i_b_un = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
 
-	filter_currents(controller->i_a_un, controller->i_b_un, &controller->i_a, &controller->i_b);
+	//filter_currents(controller->i_a_un, controller->i_b_un, &controller->i_a, &controller->i_b);
+	controller->i_a = controller->i_a_un;
+	controller->i_b = controller->i_b_un;
 
     controller->i_c = -controller->i_a - controller->i_b;
-    controller->i_c_un = -controller->i_a_un - controller->i_b_un;
+    //controller->i_c_un = -controller->i_a_un - controller->i_b_un;
 
     //vbus raw reading moved to interrupt
     controller->v_bus = controller->adc_vbus_raw*V_SCALE;
@@ -279,7 +281,7 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
 
 		controller->theta_elec = encoder->elec_angle;
 		controller->dtheta_elec = encoder->elec_velocity;
-		controller->dtheta_mech = encoder->velocity*GR;    //ben bugfix change * to /
+		controller->dtheta_mech = encoder->velocity/GR;    //ben bugfix change * to /
 		controller->theta_mech = encoder->angle_multiturn[0]/GR;
 
        /// Commutation  ///
