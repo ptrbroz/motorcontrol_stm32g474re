@@ -36,15 +36,16 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 	}
 	cal->time = (float)(loop_count - cal->start_count)*DT;
 
+
 	int debug_sine = 0;			//blind motor rotation instead of callibration
 	int data_capture = 0;
 	int overwrite_forever = 0; //keeps saving data forever, debug to check if loop freq. changes when saving
 	int disable_on_print = 0;
-	int supress_print = 1;
+	int supress_print = 0;
 
 	if(data_capture){
-		#define sampleCount 500
-		#define sampleRate 1
+		#define sampleCount 1000
+		#define sampleRate 3
 		#define freeRun 0
 		static float valsA[sampleCount];
 		static float valsB[sampleCount];
@@ -56,6 +57,15 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 		static float valsH[sampleCount];
 		static float valsI[sampleCount];
 		static float times[sampleCount];
+		const char la[] = "ia";
+		const char lb[] = "ib";
+		const char lc[] = "ic";
+		const char ld[] = "id";
+		const char le[] = "iq";
+		const char lf[] = "theta_elec";
+		const char lg[] = "theta_mech";
+		const char lh[] = "vbus";
+		const char li[] = "0";
 		if(debugCounter%sampleRate==0){
 			//printf("DC %u k, time = %f\n\r", debugCounter/1000, cal->time);
 			//printf("%f %f %f \r\n", controller->i_a, controller->i_b, controller->i_c);
@@ -70,13 +80,13 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 
 			//printf("%d\n\r",k);
 			if(k<sampleCount){
-			valsA[k] = controller->i_a;
+				valsA[k] = controller->i_a;
 			valsB[k] = controller->i_b;
-			valsC[k] = controller->i_a_un;
-			valsD[k] = controller->i_b_un;
-			valsE[k] = controller->d_int;
-			valsF[k] = controller->q_int;
-			valsG[k] = controller->adc_vbus_raw;
+			valsC[k] = controller->i_c;
+			valsD[k] = controller->i_d_filt;
+			valsE[k] = controller->i_q_filt;
+			valsF[k] = controller->theta_elec;
+			valsG[k] = controller->theta_mech;
 			valsH[k] = controller->v_bus;
 			valsI[k] = 0.0;//controller->dtc_w;
 			times[k] = cal->time;
@@ -97,6 +107,7 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 						}
 						else{
 							printf("DATACAP\r\n");
+							printf("t %s %s %s %s %s %s %s %s %s \r\n", la, lb, lc, ld, le, lf, lg, lh, li);
 							for(int i=0;i<sampleCount;i++){
 								//printf("%f %f %f %f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsD[i], valsE[i], valsF[i]);
 								printf("%f %f %f %f %f %f %f %f %f %f \r\n", times[i], valsA[i], valsB[i], valsC[i], valsD[i], valsE[i], valsF[i], valsG[i], valsH[i], valsI[i]);
@@ -144,7 +155,7 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
     	return;
     }
     else if(cal->time < T1+2.0f*PI_F/W_CAL){
-    	drv_disable_gd(drv); //TODO remove
+    	//drv_disable_gd(drv); //TODO remove
     	if(pf2){
     	    printf("p2\n\r");
     	    pf2 = 0;

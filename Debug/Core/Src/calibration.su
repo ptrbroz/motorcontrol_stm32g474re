@@ -1,3 +1,3 @@
 calibration.c:20:6:order_phases	56	static
-calibration.c:180:6:calibrate_encoder	40	static
-calibration.c:281:6:measure_lr	0	static
+calibration.c:191:6:calibrate_encoder	40	static
+calibration.c:292:6:measure_lr	0	static

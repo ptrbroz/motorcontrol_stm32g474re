@@ -19,18 +19,19 @@
 #include "position_sensor.h"
 #include "flash_access.h"
 
-void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
+int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 
 		static int debugCounter = 0;
 
+		int debug_sine = 0;			//blind motor rotation instead of callibration
 		int data_capture = 1;
 		int overwrite_forever = 0; //keeps saving data forever, debug to check if loop freq. changes when saving
 		int disable_on_print = 1;
 		int supress_print = 0;
 
 		if(data_capture){
-			#define sampleCount 300
-			#define sampleRate 5
+			#define sampleCount 500
+			#define sampleRate 3
 			#define freeRun 0
 			static float valsA[sampleCount];
 			static float valsB[sampleCount];
@@ -106,7 +107,21 @@ void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 			debugCounter++;
 		}
 
-
+		if(debug_sine){
+				//blindly rotate motor
+				float A = 0.04;
+				//float A = 0.00;
+				float f = 10;
+				controller->i_d_des = 0.0f;
+				controller->i_q_des = 0.0f;
+				controller->dtc_u = 0.5 + A*sin_lut(2*3.14*(f*debugCounter*DT));
+				controller->dtc_v = 0.5 + A*sin_lut(2*3.14*(f*debugCounter*DT)+6.28/3.0);
+				controller->dtc_w = 0.5 + A*sin_lut(2*3.14*(f*debugCounter*DT)+2*6.28/3.0);
+				set_dtc(controller);
+				return 1;
+				//debug sine end
+				}
+		return 0;
 }
 
 
@@ -129,6 +144,7 @@ void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 		 case CALIBRATION_MODE:
 			 if(!comm_encoder_cal.done_ordering){
 				 order_phases(&comm_encoder, &controller, &comm_encoder_cal, controller.loop_count);
+				 //debug_data_capture(&comm_encoder, &controller);
 			 }
 			 else if(!comm_encoder_cal.done_cal){
 				 calibrate_encoder(&comm_encoder, &controller, &comm_encoder_cal, controller.loop_count);
@@ -166,8 +182,9 @@ void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 			 else{
 				 torque_control(&controller);
 				 field_weaken(&controller);
-				 commutate(&controller, &comm_encoder);
-				 debug_data_capture(&comm_encoder, &controller);
+				 if(!debug_data_capture(&comm_encoder, &controller)){
+					 commutate(&controller, &comm_encoder);
+				 }
 			 }
 			 controller.timeout ++;
 			 break;
@@ -305,6 +322,7 @@ void debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 					printf("\n\r  Saved new zero position:  %.4d \n\r\n\r", M_ZERO);
 					break;
 				case FRESET_CMD:
+					PHASE_ORDER = 0;
 					E_ZERO = 0;
 				    M_ZERO = 0;
 				    I_BW = 1000;

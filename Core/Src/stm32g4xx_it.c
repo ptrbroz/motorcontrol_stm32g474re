@@ -267,6 +267,7 @@ void ADC3_IRQHandler(void)
   HAL_ADC_IRQHandler(&hadc3);
   /* USER CODE BEGIN ADC3_IRQn 1 */
   controller.adc_vbus_raw = HAL_ADC_GetValue(&ADC_CH_VBUS);
+  controller.v_bus = controller.adc_vbus_raw*V_SCALE;
   HAL_ADC_Start_IT(&ADC_CH_VBUS);
   /* USER CODE END ADC3_IRQn 1 */
 }

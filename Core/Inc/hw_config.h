@@ -1,6 +1,7 @@
 #ifndef HW_CONFIG_H
 #define HW_CONFIG_H
 
+#define COMMUTATE_OVERRIDE 1
 
 /* Timer and PWM */
 #define TIM_PWM			htim1				// PWM/ISR timer handle
@@ -57,7 +58,7 @@
 #define DTC_MIN 			0.0f          	// Min duty cycle
 #define DTC_COMP 			0.000f          // deadtime compensation (100 ns / 25 us)
 // original #define DT					.000025f		// Loop period
-#define DT					.000035f		// Loop period
+#define DT					.000040f		// Loop period
 #define EN_ENC_LINEARIZATION 1				// Enable/disable encoder linearization
 
 

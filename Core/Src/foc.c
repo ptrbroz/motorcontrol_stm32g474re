@@ -40,9 +40,14 @@ void set_dtc(ControllerStruct *controller){
 		__HAL_TIM_SET_COMPARE(&TIM_PWM, TIM_CH_W, ((TIM_PWM.Instance->ARR))*dtc_w);
 	}
 	else{
-		__HAL_TIM_SET_COMPARE(&TIM_PWM, TIM_CH_U, ((TIM_PWM.Instance->ARR))*dtc_u);
-		__HAL_TIM_SET_COMPARE(&TIM_PWM, TIM_CH_W, ((TIM_PWM.Instance->ARR))*dtc_v);
-		__HAL_TIM_SET_COMPARE(&TIM_PWM, TIM_CH_V, ((TIM_PWM.Instance->ARR))*dtc_w);
+		/*	before ben bugfix 12.06.22 | after ben bugfix
+		 * 				ch_u <- dtc_u  | ch_v <- dtc_u
+		 * 				ch_w <- dtc_v  | ch_u <- dtc_v
+		 * 				ch_v <- dtc_w  | ch_w <- dtc_w
+		 */
+		__HAL_TIM_SET_COMPARE(&TIM_PWM, TIM_CH_V, ((TIM_PWM.Instance->ARR))*dtc_u);
+		__HAL_TIM_SET_COMPARE(&TIM_PWM, TIM_CH_U, ((TIM_PWM.Instance->ARR))*dtc_v);
+		__HAL_TIM_SET_COMPARE(&TIM_PWM, TIM_CH_W, ((TIM_PWM.Instance->ARR))*dtc_w);
 	}
 }
 
@@ -72,9 +77,9 @@ void filter_currents(float newA, float newB, float *filtA, float *filtB){
 		}
 }
 
-void analog_sample (ControllerStruct *controller){
+void analog_sample_backup (ControllerStruct *controller){
 	/* Sample ADCs */
-
+	/*
 	HAL_ADC_Start(&ADC_CH_IA);
 	HAL_ADC_Start(&ADC_CH_IB);
 	HAL_ADC_PollForConversion(&ADC_CH_IA, HAL_MAX_DELAY);
@@ -85,7 +90,7 @@ void analog_sample (ControllerStruct *controller){
 	//HAL_ADC_Start(&ADC_CH_MAIN);
 	//HAL_ADC_PollForConversion(&ADC_CH_MAIN, HAL_MAX_DELAY); //vbus conversion is slower, probably replace with polling IB if vbus is ever removed
 
-	/* Handle phase order swapping so that voltage/current/torque match encoder direction */
+	// Handle phase order swapping so that voltage/current/torque match encoder direction
 	if(!PHASE_ORDER){
 		controller->adc_a_raw = HAL_ADC_GetValue(&ADC_CH_IA);
 		controller->adc_b_raw = HAL_ADC_GetValue(&ADC_CH_IB);
@@ -107,7 +112,7 @@ void analog_sample (ControllerStruct *controller){
 	controller->i_a_un = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);    // Calculate phase currents from ADC readings
 	controller->i_b_un = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
 
-	//filter_currents(controller->i_a_un, controller->i_b_un, &controller->i_a, &controller->i_b);
+	filter_currents(controller->i_a_un, controller->i_b_un, &controller->i_a, &controller->i_b);
 	controller->i_a = controller->i_a_un;
 	controller->i_b = controller->i_b_un;
 
@@ -116,6 +121,37 @@ void analog_sample (ControllerStruct *controller){
 
     //vbus raw reading moved to interrupt
     controller->v_bus = controller->adc_vbus_raw*V_SCALE;
+    */
+}
+
+void analog_sample (ControllerStruct *controller){
+	/* Sample ADCs */
+
+	//ADC sampling attempt to move closer to Ben's code
+
+	/* Handle phase order swapping so that voltage/current/torque match encoder direction */
+	if(!PHASE_ORDER){
+		controller->adc_a_raw = HAL_ADC_GetValue(&ADC_CH_IA);
+		controller->adc_b_raw = HAL_ADC_GetValue(&ADC_CH_IB);
+		//adc_ch_ic = ADC_CH_IC;
+	}
+	else{
+		controller->adc_a_raw = HAL_ADC_GetValue(&ADC_CH_IB);
+		controller->adc_b_raw = HAL_ADC_GetValue(&ADC_CH_IA);
+		//adc_ch_ic = ADC_CH_IB;
+	}
+
+	HAL_ADC_Start(&ADC_CH_IA);
+	HAL_ADC_Start(&ADC_CH_IB);
+	HAL_ADC_PollForConversion(&ADC_CH_IA, HAL_MAX_DELAY);
+	HAL_ADC_PollForConversion(&ADC_CH_IB, HAL_MAX_DELAY);
+
+	controller->i_a = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);
+	controller->i_b = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
+	controller->i_c = -controller->i_a - controller->i_b;
+
+
+    //vbus raw reading moved to interrupt
 }
 
 void abc( float theta, float d, float q, float *a, float *b, float *c){
@@ -142,6 +178,7 @@ void dq0(float theta, float a, float b, float c, float *d, float *q){
 
     *d = 0.6666667f*(cf*a + (SQRT3_2*sf-.5f*cf)*b + (-SQRT3_2*sf-.5f*cf)*c);   ///Faster DQ0 Transform
     *q = 0.6666667f*(-sf*a - (-SQRT3_2*cf-.5f*sf)*b - (SQRT3_2*cf-.5f*sf)*c);
+
 
     }
 
@@ -321,8 +358,10 @@ void commutate(ControllerStruct *controller, EncoderStruct *encoder)
        limit_norm(&controller->v_d, &controller->v_q, controller->v_max);
 
        //debug according to Ben: apply small positive voltage on q-axis, motor should spin in positive direction
-       controller->v_q = 1.0;
-       controller->v_d = 0.0;
+       if(COMMUTATE_OVERRIDE){
+		   controller->v_q = 1.0;
+		   controller->v_d = 0.0;
+       }
 
 
        abc(controller->theta_elec + 1.5f*DT*controller->dtheta_elec, controller->v_d, controller->v_q, &controller->v_u, &controller->v_v, &controller->v_w); //inverse dq0 transform on voltages

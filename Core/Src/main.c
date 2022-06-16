@@ -191,6 +191,17 @@ int main(void)
 
   }
 
+if(COMMUTATE_OVERRIDE){
+		printf("BEWARE, debug mode with overriden q, d axis voltages in commutate()!\r\n");
+	 }
+
+
+#define PHASE_ORDER_OVERRIDE 0
+  if(PHASE_ORDER_OVERRIDE){
+	  PHASE_ORDER = 0;
+	  printf("BEWARE, debug mode setting PHASE_ORDER to %d!!\n\r", PHASE_ORDER);
+  }
+
   init_controller_params(&controller);
 
   /* calibration "encoder" zeroing */
@@ -244,6 +255,7 @@ int main(void)
   	  }
 
 
+
   /*
   while(1){
 	  uint16_t retVal = drv_spi_write(&drv, (LSR<<11)|(val&mask));
@@ -288,8 +300,13 @@ int main(void)
 
 
   /* Set Interrupt Priorities */
+  /*
   NVIC_SetPriority(PWM_ISR, 1); // commutation > communication
   NVIC_SetPriority(CAN_ISR, 3);
+  */
+  //ben bugfix 12.6.22:
+  HAL_NVIC_SetPriority(PWM_ISR, 0x0,0x0);
+  HAL_NVIC_SetPriority(CAN_ISR, 0x01, 0x01);
 
   /* Start the FSM */
   state.state = MENU_MODE;
