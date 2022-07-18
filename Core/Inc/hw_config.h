@@ -1,7 +1,7 @@
 #ifndef HW_CONFIG_H
 #define HW_CONFIG_H
 
-#define COMMUTATE_OVERRIDE 1
+#define COMMUTATE_OVERRIDE 0
 
 /* Timer and PWM */
 #define TIM_PWM			htim1				// PWM/ISR timer handle
