@@ -129,6 +129,8 @@ void analog_sample (ControllerStruct *controller){
 
 	//ADC sampling attempt to move closer to Ben's code
 
+	HAL_GPIO_WritePin(LED2, GPIO_PIN_SET );
+
 	/* Handle phase order swapping so that voltage/current/torque match encoder direction */
 	if(!PHASE_ORDER){
 		controller->adc_a_raw = HAL_ADC_GetValue(&ADC_CH_IA);
@@ -140,6 +142,8 @@ void analog_sample (ControllerStruct *controller){
 		controller->adc_b_raw = HAL_ADC_GetValue(&ADC_CH_IA);
 		//adc_ch_ic = ADC_CH_IB;
 	}
+
+	HAL_GPIO_WritePin(LED2, GPIO_PIN_RESET );
 
 	HAL_ADC_Start(&ADC_CH_IA);
 	HAL_ADC_Start(&ADC_CH_IB);

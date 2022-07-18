@@ -24,7 +24,7 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 		static int debugCounter = 0;
 
 		int debug_sine = 0;			//blind motor rotation instead of callibration
-		int data_capture = 1;
+		int data_capture = 0;
 		int overwrite_forever = 0; //keeps saving data forever, debug to check if loop freq. changes when saving
 		int disable_on_print = 1;
 		int supress_print = 0;
@@ -224,7 +224,7 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 			case MOTOR_MODE:
 
 				//printf("Entering Motor Mode\r\n");
-				HAL_GPIO_WritePin(LED2, GPIO_PIN_SET );
+				//HAL_GPIO_WritePin(LED2, GPIO_PIN_SET );
 				reset_foc(&controller);
 				drv_enable_gd(drv);
 				break;
@@ -268,7 +268,7 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 				drv_disable_gd(drv);
 				reset_foc(&controller);
 				//printf("Leaving Motor Mode\r\n");
-				HAL_GPIO_WritePin(LED2, GPIO_PIN_RESET );
+				//HAL_GPIO_WritePin(LED2, GPIO_PIN_RESET );
 				//} //ben bugfix comment out
 				zero_commands(&controller);		// Set commands to zero
 				break;

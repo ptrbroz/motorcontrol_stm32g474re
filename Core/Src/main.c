@@ -277,7 +277,6 @@ if(COMMUTATE_OVERRIDE){
 
 
   HAL_GPIO_WritePin(LED1, 1 );
-  HAL_GPIO_WritePin(LED2, 1 );
 
   /* Turn on PWM */
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
@@ -326,8 +325,6 @@ if(COMMUTATE_OVERRIDE){
 
 
   HAL_GPIO_WritePin(LED1, 0 );
-  HAL_GPIO_WritePin(LED2, 0 );
-
 
   /* USER CODE END 2 */
 
