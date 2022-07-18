@@ -60,7 +60,7 @@ void ps_sample(EncoderStruct * encoder, float dt){
 	encoder->elec_angle = encoder->elec_angle<0 ? encoder->elec_angle + TWO_PI_F : encoder->elec_angle;	// Add 2*pi to negative numbers
 	/* Rollover */
 
-	//ben bugfix removed
+	//ben bugfix - removed following
 	//float angle_diff = encoder->angle_singleturn - encoder->old_angle;
 	//if(angle_diff > PI_F){encoder->turns--;}
 	//else if(angle_diff < -PI_F){encoder->turns++;}

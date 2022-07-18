@@ -146,8 +146,14 @@ void analog_sample (ControllerStruct *controller){
 	HAL_ADC_PollForConversion(&ADC_CH_IA, HAL_MAX_DELAY);
 	HAL_ADC_PollForConversion(&ADC_CH_IB, HAL_MAX_DELAY);
 
-	controller->i_a = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);
-	controller->i_b = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
+	controller->i_a_un = I_SCALE*(float)(controller->adc_a_raw - controller->adc_a_offset);
+	controller->i_b_un = I_SCALE*(float)(controller->adc_b_raw - controller->adc_b_offset);
+
+	//filter_currents(controller->i_a_un, controller->i_b_un, &controller->i_a, &controller->i_b);
+	controller->i_a = controller->i_a_un;
+	controller->i_b = controller->i_b_un;
+
+
 	controller->i_c = -controller->i_a - controller->i_b;
 
 

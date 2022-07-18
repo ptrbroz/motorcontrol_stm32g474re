@@ -30,8 +30,8 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 		int supress_print = 0;
 
 		if(data_capture){
-			#define sampleCount 500
-			#define sampleRate 3
+			#define sampleCount 400
+			#define sampleRate 1
 			#define freeRun 0
 			static float valsA[sampleCount];
 			static float valsB[sampleCount];
@@ -143,7 +143,9 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 
 		 case CALIBRATION_MODE:
 			 if(!comm_encoder_cal.done_ordering){
+				 if(!debug_data_capture(&comm_encoder, &controller)){
 				 order_phases(&comm_encoder, &controller, &comm_encoder_cal, controller.loop_count);
+				 }
 				 //debug_data_capture(&comm_encoder, &controller);
 			 }
 			 else if(!comm_encoder_cal.done_cal){
@@ -352,6 +354,14 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 				    load_from_flash();
 				    printf("\n\r  FLASH variables reset. \n\r Please cycle power. \n\r\n\r");
 				    break;
+				case INCREMENT_CMD:
+					printf(" ");
+					int increment = 500;
+					E_ZERO = E_ZERO + increment;
+					printf("OK, new E_ZERO is %d\n\r", E_ZERO);
+					save_to_flash();
+					load_from_flash();
+					break;
 				case ORDER_CMD:
 					PHASE_ORDER = !PHASE_ORDER;
 					save_to_flash();
@@ -405,6 +415,7 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 					break;
 				}
 			break;
+
 		case SETUP_MODE:
 			if(fsm_input == ENTER_CMD){
 				process_user_input(fsmstate);
@@ -440,6 +451,7 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 	    printf(" z - Set Zero Position\n\r");
 	    printf(" f - Factory reset flash vars\n\r");
 	    printf(" d - Variable dump\n\r");
+	    printf(" i - Increment electrical zero\n\r");
 	    printf(" o - Swap phase order\n\r");
 	    printf(" esc - Exit to Menu\n\r");
 

@@ -254,7 +254,11 @@ if(COMMUTATE_OVERRIDE){
 	  printf("BEWARE, debug mode with driver error printing disabled!\n\r");
   	  }
 
-
+  #define EZERO_OVERRIDE 0
+  if(EZERO_OVERRIDE){
+  	  printf("BEWARE, debug mode with hardcoded e-zero!\n\r");
+  	  E_ZERO = 0;
+    	  }
 
   /*
   while(1){
