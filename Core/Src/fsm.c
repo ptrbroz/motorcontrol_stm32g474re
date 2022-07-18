@@ -30,8 +30,8 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 		int supress_print = 0;
 
 		if(data_capture){
-			#define sampleCount 400
-			#define sampleRate 1
+			#define sampleCount 500
+			#define sampleRate 5
 			#define freeRun 0
 			static float valsA[sampleCount];
 			static float valsB[sampleCount];
@@ -69,8 +69,8 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 				valsA[k] = controller->i_a;
 				valsB[k] = controller->i_b;
 				valsC[k] = controller->i_c;
-				valsD[k] = controller->i_d_filt;
-				valsE[k] = controller->i_q_filt;
+				valsD[k] = controller->i_d;
+				valsE[k] = controller->i_q;
 				valsF[k] = controller->theta_elec;
 				valsG[k] = controller->theta_mech;
 				valsH[k] = controller->v_bus;
@@ -175,6 +175,10 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 			 break;
 
 		 case MOTOR_MODE:
+
+			 controller.kd = 1; //todo remove
+
+
 			 /* If CAN has timed out, reset all commands */
 			 #define just_stay_alive_forever_please 1 //todo remove this
 			 if((!just_stay_alive_forever_please) && (CAN_TIMEOUT > 0 ) && (controller.timeout > CAN_TIMEOUT)){
@@ -356,11 +360,13 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 				    break;
 				case INCREMENT_CMD:
 					printf(" ");
-					int increment = 500;
-					E_ZERO = E_ZERO + increment;
-					printf("OK, new E_ZERO is %d\n\r", E_ZERO);
-					save_to_flash();
-					load_from_flash();
+					controller.v_des = controller.v_des + 0.5;
+					printf("OK, new V_des is %f\n\r", controller.v_des);
+					break;
+				case DECREMENT_CMD:
+					printf(" ");
+					controller.v_des = controller.v_des - 0.5;
+					printf("OK, new V_des is %f\n\r", controller.v_des);
 					break;
 				case ORDER_CMD:
 					PHASE_ORDER = !PHASE_ORDER;
@@ -451,7 +457,8 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 	    printf(" z - Set Zero Position\n\r");
 	    printf(" f - Factory reset flash vars\n\r");
 	    printf(" d - Variable dump\n\r");
-	    printf(" i - Increment electrical zero\n\r");
+	    printf(" i - Increment vdes\n\r");
+	    printf(" j - Decrement vdes\n\r");
 	    printf(" o - Swap phase order\n\r");
 	    printf(" esc - Exit to Menu\n\r");
 

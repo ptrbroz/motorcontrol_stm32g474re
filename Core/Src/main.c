@@ -326,6 +326,8 @@ if(COMMUTATE_OVERRIDE){
 
   HAL_GPIO_WritePin(LED1, 0 );
 
+  controller.v_des = 0;//todo remove!
+
   /* USER CODE END 2 */
 
   /* Infinite loop */

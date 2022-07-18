@@ -32,6 +32,7 @@ extern "C" {
 #define FRESET_CMD          'f'
 #define FDUMP_CMD			'd'
 #define INCREMENT_CMD			'i'
+#define DECREMENT_CMD			'j'
 #define ORDER_CMD			'o'
 #define ENTER_CMD			13
 
