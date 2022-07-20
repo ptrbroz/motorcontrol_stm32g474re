@@ -1,0 +1,9 @@
+
+*.o
+*.su
+Debug/Core/Src/fsm.o
+*.su
+*.elf
+Debug/motorcontrol_stm32g474re.elf
+*.bin
+*.su

@@ -22,6 +22,7 @@ extern "C" {
 #define SETUP_MODE          4
 #define ENCODER_MODE        5
 #define INIT_TEMP_MODE      6
+#define FRESET_MODE			7
 
 #define MENU_CMD			27
 #define MOTOR_CMD			'm'
@@ -31,8 +32,10 @@ extern "C" {
 #define ZERO_CMD			'z'
 #define FRESET_CMD          'f'
 #define FDUMP_CMD			'd'
-#define INCREMENT_CMD			'i'
-#define DECREMENT_CMD			'j'
+#define INCREMENT_VEL_CMD			'i'
+#define DECREMENT_VEL_CMD			'j'
+#define INCREMENT_POS_CMD			'p'
+#define DECREMENT_POS_CMD			'l'
 #define ORDER_CMD			'o'
 #define ENTER_CMD			13
 

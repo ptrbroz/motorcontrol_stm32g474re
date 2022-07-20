@@ -22,28 +22,15 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
 	   torque in the positive direction wrt the position sensor */
 	PHASE_ORDER = 0;
 
-	static unsigned debugCounter = 0;
-
-	static int pf1, pf2, pf3, pf4, pf5;
-
-
-
 	if(!cal->started){
 		printf("Checking phase sign, pole pairs\r\n");
 		cal->started = 1;
 		cal->start_count = loop_count;
-		pf1 = pf2 = pf3 = pf4 = pf5 = 1;
 	}
 	cal->time = (float)(loop_count - cal->start_count)*DT;
 
     if(cal->time < T1){
-    	if(pf1){
-    		printf("p1\n\r");
-    		pf1 = 0;
-    	}
 	    // Set voltage angle to zero, wait for rotor position to settle
-
-
     	cal->theta_ref = 0;//W_CAL*cal->time;
         cal->cal_position.elec_angle = cal->theta_ref;
         cal->cal_position.elec_velocity = 0;
@@ -54,11 +41,6 @@ void order_phases(EncoderStruct *encoder, ControllerStruct *controller, CalStruc
     	return;
     }
     else if(cal->time < T1+2.0f*PI_F/W_CAL){
-    	//drv_disable_gd(drv); //TODO remove
-    	if(pf2){
-    	    printf("p2\n\r");
-    	    pf2 = 0;
-    	}
     	// rotate voltage vector through one electrical cycle
     	cal->theta_ref = W_CAL*(cal->time-T1);
     	cal->cal_position.elec_angle = cal->theta_ref;

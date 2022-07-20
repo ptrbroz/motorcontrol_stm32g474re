@@ -284,6 +284,9 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 
 				fsmstate->ready = 1;
 				break;
+			case FRESET_MODE:
+				fsmstate->ready = 1;
+				break;
 		}
 
  }
@@ -328,45 +331,29 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 					printf("\n\r  Saved new zero position:  %.4d \n\r\n\r", M_ZERO);
 					break;
 				case FRESET_CMD:
-					PHASE_ORDER = 0;
-					E_ZERO = 0;
-				    M_ZERO = 0;
-				    I_BW = 1000;
-				    I_MAX=40;
-				    I_FW_MAX=0;
-				    CAN_ID = 1;
-				    CAN_MASTER = 0;
-				    CAN_TIMEOUT = 1000;
-				    R_NOMINAL = 0.0f;
-				    TEMP_MAX = 125.0f;
-				    I_CAL = 5.0f;
-				    PPAIRS = 21.0f;
-				    GR = 1.0f;
-				    KT = 1.0f;
-				    KP_MAX = 500.0f;
-				    KD_MAX = 5.0f;
-				    P_MAX = 12.5f;
-				    P_MIN = -12.5f;
-				    V_MAX = 65.0f;
-				    V_MIN = -65.0f;
-				    //zero encoder LUT
-				    int *lut = &ENCODER_LUT;
-				    for(int i = 0; i < 128; i++){
-				    	lut[i] = 0;
-				    }
-				    save_to_flash();
-				    load_from_flash();
-				    printf("\n\r  FLASH variables reset. \n\r Please cycle power. \n\r\n\r");
+					fsmstate->next_state = FRESET_MODE;
+					printf("Are you sure you want to factory reset all stored flash variables?\n\r");
+					printf("Press Y (case sensitive) to perform reset or Esc to cancel.\n\r");
 				    break;
-				case INCREMENT_CMD:
+				case INCREMENT_VEL_CMD:
 					printf(" ");
 					controller.v_des = controller.v_des + 0.5;
 					printf("OK, new V_des is %f\n\r", controller.v_des);
 					break;
-				case DECREMENT_CMD:
+				case DECREMENT_VEL_CMD:
 					printf(" ");
 					controller.v_des = controller.v_des - 0.5;
 					printf("OK, new V_des is %f\n\r", controller.v_des);
+					break;
+				case INCREMENT_POS_CMD:
+					printf(" ");
+					controller.p_des = controller.p_des + 0.5;
+					printf("OK, new P_des is %f\n\r", controller.p_des);
+					break;
+				case DECREMENT_POS_CMD:
+					printf(" ");
+					controller.p_des = controller.p_des - 0.5;
+					printf("OK, new P_des is %f\n\r", controller.p_des);
 					break;
 				case ORDER_CMD:
 					PHASE_ORDER = !PHASE_ORDER;
@@ -439,6 +426,40 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 			break;
 		case MOTOR_MODE:
 			break;
+		case FRESET_MODE:
+			if(fsm_input == 'Y'){
+				PHASE_ORDER = 0;
+				E_ZERO = 0;
+				M_ZERO = 0;
+				I_BW = 1000;
+				I_MAX=40;
+				I_FW_MAX=0;
+				CAN_ID = 1;
+				CAN_MASTER = 0;
+				CAN_TIMEOUT = 1000;
+				R_NOMINAL = 0.0f;
+				TEMP_MAX = 125.0f;
+				I_CAL = 5.0f;
+				PPAIRS = 21.0f;
+				GR = 1.0f;
+				KT = 1.0f;
+				KP_MAX = 500.0f;
+				KD_MAX = 5.0f;
+				P_MAX = 12.5f;
+				P_MIN = -12.5f;
+				V_MAX = 65.0f;
+				V_MIN = -65.0f;
+				//zero encoder LUT
+				int *lut = &ENCODER_LUT;
+				for(int i = 0; i < 128; i++){
+					lut[i] = 0;
+				}
+				save_to_flash();
+				load_from_flash();
+				printf("\n\r  FLASH variables reset. \n\r Please cycle power. \n\r\n\r");
+			}
+			break;
+
 	}
 	//printf("FSM State: %d  %d\r\n", fsmstate.state, fsmstate.state_change);
  }
@@ -459,6 +480,8 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 	    printf(" d - Variable dump\n\r");
 	    printf(" i - Increment vdes\n\r");
 	    printf(" j - Decrement vdes\n\r");
+	    printf(" p - Increment pos des\n\r");
+	    printf(" l - Decrement pos des\n\r");
 	    printf(" o - Swap phase order\n\r");
 	    printf(" esc - Exit to Menu\n\r");
 
