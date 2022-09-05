@@ -176,11 +176,11 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 
 		 case MOTOR_MODE:
 
-			 controller.kd = 1; //todo remove
+
 
 
 			 /* If CAN has timed out, reset all commands */
-			 #define just_stay_alive_forever_please 1 //todo remove this
+			 #define just_stay_alive_forever_please 0 //todo remove this
 			 if((!just_stay_alive_forever_please) && (CAN_TIMEOUT > 0 ) && (controller.timeout > CAN_TIMEOUT)){
 				 zero_commands(&controller);
 			 }
@@ -228,7 +228,7 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 			case MOTOR_MODE:
 
 				//printf("Entering Motor Mode\r\n");
-				//HAL_GPIO_WritePin(LED2, GPIO_PIN_SET );
+				HAL_GPIO_WritePin(LED2, GPIO_PIN_SET );
 				reset_foc(&controller);
 				drv_enable_gd(drv);
 				break;
@@ -272,7 +272,7 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 				drv_disable_gd(drv);
 				reset_foc(&controller);
 				//printf("Leaving Motor Mode\r\n");
-				//HAL_GPIO_WritePin(LED2, GPIO_PIN_RESET );
+				HAL_GPIO_WritePin(LED2, GPIO_PIN_RESET );
 				//} //ben bugfix comment out
 				zero_commands(&controller);		// Set commands to zero
 				break;
@@ -338,21 +338,25 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 				case INCREMENT_VEL_CMD:
 					printf(" ");
 					controller.v_des = controller.v_des + 0.5;
+					controller.kd = 1;
 					printf("OK, new V_des is %f\n\r", controller.v_des);
 					break;
 				case DECREMENT_VEL_CMD:
 					printf(" ");
 					controller.v_des = controller.v_des - 0.5;
+					controller.kd = 1;
 					printf("OK, new V_des is %f\n\r", controller.v_des);
 					break;
 				case INCREMENT_POS_CMD:
 					printf(" ");
-					controller.p_des = controller.p_des + 0.5;
+					controller.p_des = controller.p_des + 0.1;
+					controller.kp = 1;
 					printf("OK, new P_des is %f\n\r", controller.p_des);
 					break;
 				case DECREMENT_POS_CMD:
 					printf(" ");
-					controller.p_des = controller.p_des - 0.5;
+					controller.p_des = controller.p_des - 0.1;
+					controller.kp = 1;
 					printf("OK, new P_des is %f\n\r", controller.p_des);
 					break;
 				case ORDER_CMD:

@@ -7,3 +7,6 @@ Debug/Core/Src/fsm.o
 Debug/motorcontrol_stm32g474re.elf
 *.bin
 *.su
+*.o
+*.o
+*.su

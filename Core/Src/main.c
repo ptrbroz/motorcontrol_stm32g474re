@@ -326,7 +326,6 @@ if(COMMUTATE_OVERRIDE){
 
   HAL_GPIO_WritePin(LED1, 0 );
 
-  controller.v_des = 0;//todo remove!
 
   /* USER CODE END 2 */
 
@@ -354,6 +353,7 @@ if(COMMUTATE_OVERRIDE){
 	  //printf("sent\n");
 	  if(state.state==MOTOR_MODE){
 	  	  //printf("%.2f %.2f %.2f %.2f %.2f %.2f\r\n", controller.i_a, controller.i_b, controller.i_d, controller.i_q, controller.dtheta_elec, controller.dtheta_mech);
+		  //printf("%f.2 ", controller.p_des);
 	  }
     /* USER CODE END WHILE */
 

@@ -48,14 +48,14 @@ void MX_FDCAN2_Init(void)
   hfdcan2.Init.AutoRetransmission = DISABLE;
   hfdcan2.Init.TransmitPause = DISABLE;
   hfdcan2.Init.ProtocolException = DISABLE;
-  hfdcan2.Init.NominalPrescaler = 1;
+  hfdcan2.Init.NominalPrescaler = 5;
   hfdcan2.Init.NominalSyncJumpWidth = 1;
   hfdcan2.Init.NominalTimeSeg1 = 12;
-  hfdcan2.Init.NominalTimeSeg2 = 3;
+  hfdcan2.Init.NominalTimeSeg2 = 4;
   hfdcan2.Init.DataPrescaler = 1;
   hfdcan2.Init.DataSyncJumpWidth = 1;
   hfdcan2.Init.DataTimeSeg1 = 12;
-  hfdcan2.Init.DataTimeSeg2 = 3;
+  hfdcan2.Init.DataTimeSeg2 = 4;
   hfdcan2.Init.StdFiltersNbr = 1;
   hfdcan2.Init.ExtFiltersNbr = 1;
   hfdcan2.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
@@ -129,10 +129,10 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* fdcanHandle)
 
 /* USER CODE BEGIN 1 */
 void can_rx_init(CANRxMessage *msg){
-	msg->filter.FilterID1 = CAN_ID;//<<5;
-	msg->filter.FilterID2 = 0x7FF;
+	msg->filter.FilterID1 = CAN_ID;
+	msg->filter.FilterID2 = CAN_ID;
 	msg->filter.FilterIndex = 0;
-	msg->filter.FilterType = FDCAN_FILTER_MASK;//FDCAN_FILTER_RANGE;
+	msg->filter.FilterType = FDCAN_FILTER_DUAL;//FDCAN_FILTER_RANGE; //
 	msg->filter.IdType = FDCAN_STANDARD_ID;
 	msg->filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
 	//msg->filter.FilterConfig = FDCAN_FILTER_DISABLE;
@@ -141,7 +141,7 @@ void can_rx_init(CANRxMessage *msg){
 	HAL_FDCAN_ConfigFilter(&CAN_H, &msg->filter);
 
 	//HAL_FDCAN_ConfigGlobalFilter(&CAN_H, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_FILTER_REMOTE, FDCAN_FILTER_REMOTE);
-	HAL_FDCAN_ConfigGlobalFilter(&CAN_H, FDCAN_REJECT, FDCAN_REJECT, FDCAN_REJECT, FDCAN_REJECT);
+	HAL_FDCAN_ConfigGlobalFilter(&CAN_H, FDCAN_REJECT, FDCAN_REJECT, FDCAN_FILTER_REMOTE, FDCAN_REJECT_REMOTE);
 
 
 	//original settings from Ben's fw:
@@ -231,6 +231,8 @@ void unpack_cmd(CANRxMessage msg, float *commands){// ControllerStruct * control
         commands[2] = uint_to_float(kp_int, KP_MIN, KP_MAX, 12);
         commands[3] = uint_to_float(kd_int, KD_MIN, KD_MAX, 12);
         commands[4] = uint_to_float(t_int, -I_MAX*KT*GR, I_MAX*KT*GR, 12);
+
+        printf("C %.2f", commands[1]);
 
     }
 /* USER CODE END 1 */

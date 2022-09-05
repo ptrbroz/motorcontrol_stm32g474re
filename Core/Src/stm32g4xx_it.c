@@ -278,18 +278,17 @@ void ADC3_IRQHandler(void)
 void FDCAN2_IT0_IRQHandler(void)
 {
   /* USER CODE BEGIN FDCAN2_IT0_IRQn 0 */
-
+  //HAL_GPIO_WritePin(LED2, 1);
   /* USER CODE END FDCAN2_IT0_IRQn 0 */
   HAL_FDCAN_IRQHandler(&hfdcan2);
   /* USER CODE BEGIN FDCAN2_IT0_IRQn 1 */
   HAL_FDCAN_GetRxMessage(&CAN_H, FDCAN_RX_FIFO0, &can_rx.rx_header, can_rx.data);	// Read CAN
   uint32_t TxMailbox;
-  //pack_reply(&can_tx, CAN_ID,  comm_encoder.angle_multiturn[0]/GR, comm_encoder.velocity/GR, controller.i_q_filt*KT*GR);	// Pack response
 
-  printf("CAN tx disabled!!\n\r");
+  pack_reply(&can_tx, CAN_ID,  comm_encoder.angle_multiturn[0]/GR, comm_encoder.velocity/GR, controller.i_q_filt*KT*GR);	// Pack response
+
   //HAL_FDCAN_AddTxMessage(&CAN_H, &can_tx.tx_header, can_tx.data, &TxMailbox);	// Send response - from Ben's fw
-  //TODO send again
-  //HAL_FDCAN_AddMessageToTxFifoQ(&CAN_H, &can_tx.tx_header, can_tx.data); //replacement for above line
+  HAL_FDCAN_AddMessageToTxFifoQ(&CAN_H, &can_tx.tx_header, can_tx.data); //replacement for above line
 
   /* Check for special Commands */
   if(((can_rx.data[0]==0xFF) & (can_rx.data[1]==0xFF) & (can_rx.data[2]==0xFF) & (can_rx.data[3]==0xFF) & (can_rx.data[4]==0xFF) & (can_rx.data[5]==0xFF) & (can_rx.data[6]==0xFF) & (can_rx.data[7]==0xFC))){
@@ -305,6 +304,8 @@ void FDCAN2_IT0_IRQHandler(void)
 	  unpack_cmd(can_rx, controller.commands);	// Unpack commands
   	  controller.timeout = 0;					// Reset timeout counter
       }
+
+  //HAL_GPIO_WritePin(LED2, 0);
 
   /* USER CODE END FDCAN2_IT0_IRQn 1 */
 }
