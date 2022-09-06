@@ -18,10 +18,14 @@ float fminf3(float x, float y, float z);
 //float roundf(float x);
 void limit_norm(float *x, float *y, float limit);
 void limit(float *x, float min, float max);
-int float_to_uint(float x, float x_min, float x_max, int bits);
-float uint_to_float(int x_int, float x_min, float x_max, int bits);
 float sin_lut(float theta);
 float cos_lut(float theta);
+
+
+int float_to_uint_symmetric(float x, const float  x_max, unsigned int bits);
+int float_to_uint_positive(float x, const float  x_max, unsigned int bits);
+float uint_to_float_symmetric(int x_int, const float x_max, unsigned int bits);
+float uint_to_float_positive(int x_int, const float x_max, unsigned int bits);
 
 
 

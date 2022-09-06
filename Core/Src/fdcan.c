@@ -192,9 +192,9 @@ void can_tx_init(CANTxMessage *msg){
 /// 3: [velocity[3-0], current[11-8]]
 /// 4: [current[7-0]]
 void pack_reply(CANTxMessage *msg, uint8_t id, float p, float v, float t){
-    int p_int = float_to_uint(p, P_MIN, P_MAX, 16);
-    int v_int = float_to_uint(v, V_MIN, V_MAX, 12);
-    int t_int = float_to_uint(t, -I_MAX*KT*GR, I_MAX*KT*GR, 12);
+    int p_int = float_to_uint_symmetric(p, P_MAX, 16);
+    int v_int = float_to_uint_symmetric(v, V_MAX, 12);
+    int t_int = float_to_uint_symmetric(t, I_MAX*KT*GR, 12);
     msg->data[0] = id;
     msg->data[1] = p_int>>8;
     msg->data[2] = p_int&0xFF;
@@ -226,11 +226,11 @@ void unpack_cmd(CANRxMessage msg, float *commands){// ControllerStruct * control
         int kd_int = (msg.data[5]<<4)|(msg.data[6]>>4);
         int t_int = ((msg.data[6]&0xF)<<8)|msg.data[7];
 
-        commands[0] = uint_to_float(p_int, P_MIN, P_MAX, 16);
-        commands[1] = uint_to_float(v_int, V_MIN, V_MAX, 12);
-        commands[2] = uint_to_float(kp_int, KP_MIN, KP_MAX, 12);
-        commands[3] = uint_to_float(kd_int, KD_MIN, KD_MAX, 12);
-        commands[4] = uint_to_float(t_int, -I_MAX*KT*GR, I_MAX*KT*GR, 12);
+        commands[0] = uint_to_float_symmetric(p_int, P_MAX, 16);
+        commands[1] = uint_to_float_symmetric(v_int, V_MAX, 12);
+        commands[2] = uint_to_float_positive(kp_int, KP_MAX, 12);
+        commands[3] = uint_to_float_positive(kd_int, KD_MAX, 12);
+        commands[4] = uint_to_float_symmetric(t_int, I_MAX*KT*GR, 12);
 
         printf("C %.2f", commands[1]);
 

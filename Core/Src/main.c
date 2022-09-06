@@ -284,7 +284,6 @@ if(COMMUTATE_OVERRIDE){
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
 
   /* CAN setup */
-  //TODO can
   /*
   can_rx_init(&can_rx);
   can_tx_init(&can_tx);
