@@ -43,3 +43,4 @@ Debug/motorcontrol_stm32g474re.bin
 Debug/motorcontrol_stm32g474re.elf
 Debug/motorcontrol_stm32g474re.list
 Debug/motorcontrol_stm32g474re.map
+Debug/Core/Src/fdcan.o

@@ -232,7 +232,7 @@ void unpack_cmd(CANRxMessage msg, float *commands){// ControllerStruct * control
         commands[3] = uint_to_float_positive(kd_int, KD_MAX, 12);
         commands[4] = uint_to_float_symmetric(t_int, I_MAX*KT*GR, 12);
 
-        printf("C %.2f", commands[1]);
+        printf("C %.2f, %.2f ", commands[1], commands[3]);
 
     }
 /* USER CODE END 1 */

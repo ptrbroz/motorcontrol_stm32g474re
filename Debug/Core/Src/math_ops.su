@@ -4,7 +4,11 @@ math_ops.c:16:7:fmaxf3	0	static
 math_ops.c:21:7:fminf3	0	static
 math_ops.c:31:6:limit_norm	0	static
 math_ops.c:40:6:limit	0	static
-math_ops.c:44:5:float_to_uint	0	static
-math_ops.c:52:7:uint_to_float	0	static
-math_ops.c:59:7:sin_lut	16	static
-math_ops.c:66:7:cos_lut	16	static
+math_ops.c:47:7:sin_lut	16	static
+math_ops.c:54:7:cos_lut	16	static
+math_ops.c:58:5:float_to_uint_internal	8	static
+math_ops.c:74:7:uint_to_float_internal	0	static
+math_ops.c:90:5:float_to_uint_symmetric	8	static
+math_ops.c:94:5:float_to_uint_positive	8	static
+math_ops.c:98:7:uint_to_float_symmetric	0	static
+math_ops.c:102:7:uint_to_float_positive	0	static

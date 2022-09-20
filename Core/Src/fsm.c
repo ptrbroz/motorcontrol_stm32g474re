@@ -332,7 +332,7 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 					break;
 				case FRESET_CMD:
 					fsmstate->next_state = FRESET_MODE;
-					printf("Are you sure you want to factory reset all stored flash variables?\n\r");
+					printf("Are you sure you want to factory reset all stored flash variables? You will need to calibrate again to rebuild the encoder LUT.\n\r");
 					printf("Press Y (case sensitive) to perform reset or Esc to cancel.\n\r");
 				    break;
 				case INCREMENT_VEL_CMD:
@@ -447,8 +447,8 @@ int debug_data_capture(EncoderStruct *encoder, ControllerStruct *controller){
 				PPAIRS = 21.0f;
 				GR = 1.0f;
 				KT = 1.0f;
-				KP_MAX = 500.0f;
-				KD_MAX = 5.0f;
+				KP_MAX = 50.0f;
+				KD_MAX = 0.5f;
 				P_MAX = 12.5f;
 				P_MIN = -12.5f;
 				V_MAX = 65.0f;
